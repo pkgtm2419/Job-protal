@@ -1,1 +1,57 @@
-<p>registration works!</p>
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div class="row">
+                    <form [formGroup]="form" (ngSubmit)="createForm()">
+                        <p class="d-grid gap-2 mt-2 px-2 my-1">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Full Name</mat-label>
+                                <input matInput placeholder="Full Name" formControlName="fullName" type="text">
+                                <mat-icon matSuffix>verified_user</mat-icon>
+                            </mat-form-field>
+                        </p>
+                        <p class="d-grid gap-2 mt-2 px-2 my-1">
+                            <mat-form-field appearance="outline">
+                                <mat-label>E-Mail</mat-label>
+                                <input matInput placeholder="E-Mail" formControlName="email" type="text">
+                                <mat-icon matSuffix>verified_user</mat-icon>
+                            </mat-form-field>
+                        </p>
+                        <p class="d-grid gap-2 mt-2 px-2 my-1">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Contact Number</mat-label>
+                                <input matInput placeholder="Contact Number" formControlName="contactNumber" type="text">
+                                <mat-icon matSuffix>verified_user</mat-icon>
+                            </mat-form-field>
+                        </p>
+                        <p class="d-grid gap-2 mt-2 px-2 my-1">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Password</mat-label>
+                                <input matInput placeholder="Password" formControlName="password" type="password">
+                                <mat-icon matSuffix>remove_red_eye</mat-icon>
+                            </mat-form-field>
+                        </p>
+                        <p class="d-grid gap-2 mt-2 px-2 my-1">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Confirm Password</mat-label>
+                                <input matInput placeholder="Confirm Password" formControlName="matchPassword" type="password">
+                                <mat-icon matSuffix>remove_red_eye</mat-icon>
+                            </mat-form-field>
+                        </p>
+                        <div class="d-grid gap-2 mt-2 px-2 my-1">
+                            <button type="submit" mat-raised-button color="primary">Sign Up</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="row px-2 mt-4">
+                    <div class="col-12 text-center">
+                        <a [routerLink]="['/']" routerLinkActive="router-link-active">Sign in</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+</section>

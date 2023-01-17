@@ -1,1 +1,39 @@
-<p>login works!</p>
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div class="row">
+                    <form [formGroup]="form" (ngSubmit)="createForm()">
+                        <p class="d-grid gap-2 mt-2 px-2 my-1">
+                            <mat-form-field appearance="outline">
+                                <mat-label>User E-Mail or Mobile no.</mat-label>
+                                <input matInput placeholder="User E-Mail or Mobile no." formControlName="username" type="text">
+                                <mat-icon matSuffix>verified_user</mat-icon>
+                            </mat-form-field>
+                        </p>
+                        <p class="d-grid gap-2 mt-2 px-2 my-1">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Password</mat-label>
+                                <input matInput placeholder="Password" formControlName="password" type="password">
+                                <mat-icon matSuffix>remove_red_eye</mat-icon>
+                            </mat-form-field>
+                        </p>
+                        <div class="d-grid gap-2 mt-2 px-2 my-1">
+                            <button type="submit" mat-raised-button color="primary">Sign in</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="row px-2 mt-4">
+                    <div class="col-6">
+                        <a [routerLink]="['/registration']" routerLinkActive="router-link-active">Sign Up</a>
+                    </div>
+                    <div class="col-6 text-end">
+                        <a [routerLink]="['/reset-password']" routerLinkActive="router-link-active">Forget Password</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+</section>
