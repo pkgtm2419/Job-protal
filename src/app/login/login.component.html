@@ -1,22 +1,23 @@
 <section>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
+            <div class="col-md-1"></div>
+            <div class="col-md-4 p-3">
+                <p style="font-size: xx-large;" class="mb-4">Welcome to AT community</p>
                 <div class="row">
                     <form [formGroup]="form" (ngSubmit)="createForm()">
                         <p class="d-grid gap-2 mt-2 px-2 my-1">
                             <mat-form-field appearance="outline">
                                 <mat-label>User E-Mail or Mobile no.</mat-label>
-                                <input matInput placeholder="User E-Mail or Mobile no." formControlName="username" type="text">
+                                <input matInput placeholder="User E-Mail or Mobile no." formControlName="email" type="text">
                                 <mat-icon matSuffix>verified_user</mat-icon>
                             </mat-form-field>
                         </p>
                         <p class="d-grid gap-2 mt-2 px-2 my-1">
                             <mat-form-field appearance="outline">
                                 <mat-label>Password</mat-label>
-                                <input matInput placeholder="Password" formControlName="password" type="password">
-                                <mat-icon matSuffix>remove_red_eye</mat-icon>
+                                <input matInput placeholder="Password" formControlName="password" [type]="showPass ? 'password' : 'text'">
+                                <mat-icon matSuffix (click)="showPass = !showPass"><span class="material-symbols-outlined"> {{showPass ? 'visibility' : 'visibility_off'}} </span></mat-icon>
                             </mat-form-field>
                         </p>
                         <div class="d-grid gap-2 mt-2 px-2 my-1">
@@ -33,7 +34,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4"></div>
+            <div class="col-md-1"></div>
+            <div class="col-md-6"></div>
         </div>
     </div>
 </section>

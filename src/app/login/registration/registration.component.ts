@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ToasterService } from 'src/app/_shared/_service';
+import { AppService, ToasterService } from 'src/app/_shared/_service';
 
 @Component({
   selector: 'app-registration',
@@ -9,21 +9,48 @@ import { ToasterService } from 'src/app/_shared/_service';
 })
 export class RegistrationComponent  implements OnInit {
   form :FormGroup = new FormGroup({
-    fullName: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    contactNumber: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-    matchPassword: new FormControl('', [Validators.required])
+    password2: new FormControl('', [Validators.required]),
+    otp: new FormControl(''),
   });
 
-  constructor(private toaster: ToasterService) {}
+  constructor(private toaster: ToasterService, private service: AppService) {}
+  emailValidationOTP: boolean = false;
 
   ngOnInit(): void {}
 
   createForm(): void {
-    if(!this.form.valid) {
+    if(this.emailValidationOTP) {
+      this.emailOTP();
       return;
     }
-    console.log(this.form.value);
+    if(!this.form.valid) {
+      this.toaster.error("Please enter valid user and password!");
+      return;
+    }
+    let match = this.form.value;
+    delete match.otp;
+    match.role = 'seeker';
+    this.service.registerUser(match).subscribe((res: any) => {
+      console.log(res);
+      this.emailValidationOTP = true;
+      this.toaster.success('User Login successfully!');
+    }),
+    (error: any) => {
+      this.toaster.error("Please enter valid user and password!"+ error);
+    }
+  }
+
+  emailOTP(): void {
+    let match = { otp : this.form.value.otp };
+    this.service.emailOTPValidation(match).subscribe((res: any) => {
+      console.log(res);
+      this.toaster.success('User Login successfully!');
+    }),
+    (error: any) => {
+      this.toaster.error("Please enter valid user and password!"+ error);
+    }
   }
 }

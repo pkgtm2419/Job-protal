@@ -8,7 +8,7 @@
                         <p class="d-grid gap-2 mt-2 px-2 my-1">
                             <mat-form-field appearance="outline">
                                 <mat-label>Full Name</mat-label>
-                                <input matInput placeholder="Full Name" formControlName="fullName" type="text">
+                                <input matInput placeholder="Full Name" formControlName="name" type="text">
                                 <mat-icon matSuffix>verified_user</mat-icon>
                             </mat-form-field>
                         </p>
@@ -16,13 +16,6 @@
                             <mat-form-field appearance="outline">
                                 <mat-label>E-Mail</mat-label>
                                 <input matInput placeholder="E-Mail" formControlName="email" type="text">
-                                <mat-icon matSuffix>verified_user</mat-icon>
-                            </mat-form-field>
-                        </p>
-                        <p class="d-grid gap-2 mt-2 px-2 my-1">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Contact Number</mat-label>
-                                <input matInput placeholder="Contact Number" formControlName="contactNumber" type="text">
                                 <mat-icon matSuffix>verified_user</mat-icon>
                             </mat-form-field>
                         </p>
@@ -36,8 +29,15 @@
                         <p class="d-grid gap-2 mt-2 px-2 my-1">
                             <mat-form-field appearance="outline">
                                 <mat-label>Confirm Password</mat-label>
-                                <input matInput placeholder="Confirm Password" formControlName="matchPassword" type="password">
+                                <input matInput placeholder="Confirm Password" formControlName="password2" type="password">
                                 <mat-icon matSuffix>remove_red_eye</mat-icon>
+                            </mat-form-field>
+                        </p>
+                        <p class="d-grid gap-2 mt-2 px-2 my-1" *ngIf="emailValidationOTP">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Verify OTP</mat-label>
+                                <input matInput placeholder="Enter OTP" formControlName="otp">
+                                <mat-icon matSuffix>verified_user</mat-icon>
                             </mat-form-field>
                         </p>
                         <div class="d-grid gap-2 mt-2 px-2 my-1">

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ToasterService } from '../_shared/_service';
+import { AppService, ToasterService } from '../_shared/_service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,20 +10,29 @@ import { ToasterService } from '../_shared/_service';
 })
 
 export class LoginComponent implements OnInit {
+  showPass: boolean = true;
   form :FormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required])
   });
 
-  constructor(private toaster: ToasterService) {}
+  constructor(private toaster: ToasterService, private service: AppService, private router: Router) {}
 
   ngOnInit(): void {}
 
   createForm(): void {
     if(!this.form.valid) {
+      this.toaster.error("Please enter valid user and password!");
       return;
     }
-    console.log(this.form.value);
+    let match = this.form.value;
+    this.service.userLogIn(match).subscribe((res: any) => {
+      window.location.reload();
+      this.toaster.success('User Login successfully!');
+    }),
+    (error: any) => {
+      this.toaster.error("Please enter valid user and password!"+ error);
+    }
   }
 
 }

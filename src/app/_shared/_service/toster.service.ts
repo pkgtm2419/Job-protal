@@ -9,19 +9,19 @@ export class ToasterService {
 
   constructor(private toastr: ToastrService) { }
 
-  success(title: string | undefined, msg: string | undefined): void {
-    this.toastr.success(title, msg);
+  success(msg: string): void {
+    this.toastr.success("Success", msg);
   }
 
-  warning(title: string | undefined, msg: string | undefined): void {
-    this.toastr.warning(title, msg);
+  warning(msg: string): void {
+    this.toastr.warning("Warning", msg);
   }
 
-  error(title: string | undefined, msg: string | undefined): void {
-    this.toastr.error(title, msg);
+  error(msg: string): void {
+    this.toastr.error("Error", msg);
   }
 
-  info(title: string | undefined, msg: string | undefined): void {
-    this.toastr.info(title, msg);
+  info(msg: string): void {
+    this.toastr.info("Information", msg);
   }
 }
