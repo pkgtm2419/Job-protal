@@ -34,7 +34,6 @@ export class RegistrationComponent  implements OnInit {
     delete match.otp;
     match.role = 'seeker';
     this.service.registerUser(match).subscribe((res: any) => {
-      console.log(res);
       this.emailValidationOTP = true;
       this.toaster.success('User Login successfully!');
     }),
@@ -46,7 +45,6 @@ export class RegistrationComponent  implements OnInit {
   emailOTP(): void {
     let match = { otp : this.form.value.otp };
     this.service.emailOTPValidation(match).subscribe((res: any) => {
-      console.log(res);
       this.toaster.success('User Login successfully!');
     }),
     (error: any) => {

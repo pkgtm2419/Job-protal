@@ -1,19 +1,19 @@
 <section class="bg-img">
     <div class="container-fluid">
-        <div class="row">
+        <div class="row mt-4">
             <div class="col-md-1"></div>
-            <div class="col-md-4 p-3">
-                <p style="font-size: xx-large;" class="mb-4">Welcome to AT community</p>
-                <div class="row">
+            <div class="col-md-4 card p-3">
+                <p><span class="display-6">Welcome to</span> <br> <br> <span class="display-4 rounded p-2 text-bg-danger my-3"> AT community</span></p>
+                <div class="row mt-3">
                     <form [formGroup]="form" (ngSubmit)="createForm()">
-                        <p class="d-grid gap-2 mt-2 px-2 my-1">
+                        <p class="d-grid gap-2 px-2 my-2">
                             <mat-form-field appearance="outline">
                                 <mat-label>User E-Mail or Mobile no.</mat-label>
                                 <input matInput placeholder="User E-Mail or Mobile no." formControlName="email" type="text">
                                 <mat-icon matSuffix>verified_user</mat-icon>
                             </mat-form-field>
                         </p>
-                        <p class="d-grid gap-2 mt-2 px-2 my-1">
+                        <p class="d-grid gap-2 px-2 my-2">
                             <mat-form-field appearance="outline">
                                 <mat-label>Password</mat-label>
                                 <input matInput placeholder="Password" formControlName="password" [type]="showPass ? 'password' : 'text'">
@@ -25,10 +25,8 @@
                         </div>
                     </form>
                 </div>
-                <div class="row px-2 mt-4">
-                    <div class="col-6">
-                        <a [routerLink]="['/registration']" routerLinkActive="router-link-active">Sign Up</a>
-                    </div>
+                <div class="row px-2 mt-3">
+                    <div class="col-6"></div>
                     <div class="col-6 text-end">
                         <a [routerLink]="['/reset-password']" routerLinkActive="router-link-active">Forget Password</a>
                     </div>

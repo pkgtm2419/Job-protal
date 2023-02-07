@@ -16,7 +16,20 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', [Validators.required])
   });
 
-  constructor(private toaster: ToasterService, private service: AppService, private router: Router) {}
+  constructor(private toaster: ToasterService, private service: AppService, private router: Router) {
+    if (this.service.getToken()) {
+      this.service.user.subscribe((res: any) => {
+        res = JSON.parse(res);
+        if(res.is_verified) {
+          this.router.navigate(['dashboard']);
+        } else {
+          this.service.logOut();
+        }
+      })
+    } else {
+      this.service.logOut();
+    }
+  }
 
   ngOnInit(): void {}
 

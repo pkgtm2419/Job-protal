@@ -1,32 +1,33 @@
-<section>
+<section class="bg-img">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
-                <div class="row">
+        <div class="row mt-4">
+            <div class="col-md-1"></div>
+            <div class="col-md-4 card p-3">
+                <p><span style="font-size: x-large;">Welcome to</span> <br> <br> <span class="display-4 rounded p-2 text-bg-danger my-3"> AT community</span></p>
+                <div class="row mt-3">
                     <form [formGroup]="form" (ngSubmit)="createForm()">
-                        <p class="d-grid gap-2 mt-2 px-2 my-1">
+                        <p class="d-grid gap-2 px-2 my-2">
                             <mat-form-field appearance="outline">
                                 <mat-label>Full Name</mat-label>
                                 <input matInput placeholder="Full Name" formControlName="name" type="text">
                                 <mat-icon matSuffix>verified_user</mat-icon>
                             </mat-form-field>
                         </p>
-                        <p class="d-grid gap-2 mt-2 px-2 my-1">
+                        <p class="d-grid gap-2 px-2 my-2">
                             <mat-form-field appearance="outline">
                                 <mat-label>E-Mail</mat-label>
                                 <input matInput placeholder="E-Mail" formControlName="email" type="text">
                                 <mat-icon matSuffix>verified_user</mat-icon>
                             </mat-form-field>
                         </p>
-                        <p class="d-grid gap-2 mt-2 px-2 my-1">
+                        <p class="d-grid gap-2 px-2 my-2">
                             <mat-form-field appearance="outline">
                                 <mat-label>Password</mat-label>
                                 <input matInput placeholder="Password" formControlName="password" type="password">
                                 <mat-icon matSuffix>remove_red_eye</mat-icon>
                             </mat-form-field>
                         </p>
-                        <p class="d-grid gap-2 mt-2 px-2 my-1">
+                        <p class="d-grid gap-2 px-2 my-2">
                             <mat-form-field appearance="outline">
                                 <mat-label>Confirm Password</mat-label>
                                 <input matInput placeholder="Confirm Password" formControlName="password2" type="password">
@@ -45,13 +46,10 @@
                         </div>
                     </form>
                 </div>
-                <div class="row px-2 mt-4">
-                    <div class="col-12 text-center">
-                        <a [routerLink]="['/']" routerLinkActive="router-link-active">Sign in</a>
-                    </div>
-                </div>
             </div>
-            <div class="col-md-4"></div>
+            <div class="col-md-1"></div>
+            <div class="col-md-6"></div>
         </div>
     </div>
 </section>
+

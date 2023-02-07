@@ -9,21 +9,27 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   user: any;
+  userName: any;
+  role: any;
 
-  constructor(private service: AppService, private router: Router) {}
+  constructor(private service: AppService, public router: Router) {}
 
   ngOnInit(): void {
     this.getLogInUser();
   }
 
   getLogInUser(): void {
-    this.service.user.subscribe((res: any) => {
-      if(res) {
-        this.user = res;
-        this.router.navigate(['dashboard']);
-      } else {
-        this.router.navigate(['/']);
-      }
-    })
+    this.service.user.subscribe((res:any) => {
+      this.user = JSON.parse(res);
+      this.userName = this.user.name;
+      this.role = this.user.role;
+    });
+  }
+
+  logOutUser(): void {
+    this.service.logOut().subscribe((res: any) => {
+      this.service.sessionClear();
+      this.ngOnInit();
+    });
   }
 }

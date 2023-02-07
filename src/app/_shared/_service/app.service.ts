@@ -55,7 +55,7 @@ export class AppService {
     localStorage.clear();
     this.userSubject.next(null);
     this.toaster.success('Log out successfully.');
-    this.router.navigate(['/']);
+    this.router.navigate(['']);
   }
 
   logOut(): Observable<any[]> {
