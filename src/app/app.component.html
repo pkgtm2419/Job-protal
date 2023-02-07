@@ -1,22 +1,22 @@
 <header>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <mat-toolbar class="bg-white">
                 <mat-toolbar-row  *ngIf="!user">
-                    <span>AT Jobs</span>
+                    <button mat-button [routerLink]="['dashboard']" routerLinkActive="router-link-active"><mat-icon>home</mat-icon> Job Portal</button>
                     <span class="spacer"></span>
-                    <button mat-button class="mx-1" color="primary">Contact Us</button>
-                    <button mat-button class="mx-1" color="primary">About Us</button>
+                    <button mat-button class="mx-1" [routerLink]="['about-us']" routerLinkActive="router-link-active" color="primary">About Us</button>
+                    <button mat-button class="mx-1" [routerLink]="['contact-us']" routerLinkActive="router-link-active" color="primary">Contact Us</button>
                     <span class="border-end mx-2">&nbsp;</span>
                     <button mat-raised-button [routerLink]="['']" routerLinkActive="router-link-active" class="mx-1" color="primary">Sign in</button>
                     <button mat-raised-button [routerLink]="['registration']" routerLinkActive="router-link-active" class="mx-1" color="warn">Register</button>
                 </mat-toolbar-row>
                 <mat-toolbar-row *ngIf="user">
-                    <span>AT Jobs</span>
+                    <button mat-button [routerLink]="['dashboard']" routerLinkActive="router-link-active"><mat-icon>home</mat-icon> Job Portal</button>
                     <span class="spacer"></span>
                     <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Log Out"><mat-icon>more_vert</mat-icon></button>
                     <mat-menu #menu="matMenu" xPosition="before">
-                        <button mat-menu-item><mat-icon>settings</mat-icon><span>{{userName}} Profile</span></button>
+                        <button mat-menu-item [routerLink]="['user-profile']" routerLinkActive="router-link-active" ><mat-icon>settings</mat-icon><span>{{userName}} Profile</span></button>
                         <button mat-menu-item (click)="logOutUser()"><mat-icon>close</mat-icon><span>Sign out</span></button>
                     </mat-menu>
                 </mat-toolbar-row>
