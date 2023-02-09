@@ -37,3 +37,46 @@ p {
 ::-webkit-scrollbar-thumb:hover {
     background: #3f51b5;
 }
+
+.material-symbols-outlined {
+    padding: 0px 6px;
+    font-size: 20px;
+    font-weight: 500;
+    display: block;
+}
+
+.model-menu {
+    padding: 0;
+    list-style: none;
+    margin-bottom: 0.5rem;
+}
+
+.model-menu li {
+display: inline-block;
+padding: 0 8px 0 8px;
+}
+
+.model-menu li:first-child {
+display: inline-block;
+padding-left: 0;
+}
+
+.model-menu li a {
+color: #4d4d4d;
+text-decoration: none;
+font-size: 20px;
+font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .model-menu {
+        margin-bottom: 0.8rem;
+    }
+    .model-menu {
+        margin-bottom: 0.7rem;
+    }
+    .model-menu li {
+        display: inline-block;
+        padding: 0 4px 0 4px;
+    }
+}

@@ -28,22 +28,28 @@ export class AppService {
   userLogIn(data: Users): Observable<any[]> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' })};
     return this._http.post<any[]>(`${environment._url}/auth/login/`,data, httpOptions).pipe(map((userData: any) => {
-      localStorage.setItem('user', JSON.stringify(userData.user));
-      this._cookie.set('a_token', userData.token.access);
-      this._cookie.set('r_token', userData.token.refresh);
-      this.userSubject = userData;
-      return userData;
+      debugger;
+      if(userData.status) {
+        console.log(userData);
+        localStorage.setItem('user', JSON.stringify(userData.user));
+        this._cookie.set('a_token', userData.token.access);
+        this._cookie.set('r_token', userData.token.refresh);
+        this.userSubject = userData;
+        return userData;
+      }
     }));
   }
 
   registerUser(data: any): Observable<any[]> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' })};
     return this._http.post<any[]>(`${environment._url}/auth/register/`, data, httpOptions).pipe(map((userData: any) => {
-      localStorage.setItem('user', JSON.stringify(userData.user));
-      this._cookie.set('a_token', userData.token.access);
-      this._cookie.set('r_token', userData.token.refresh);
-      this.userSubject = userData;
-      return userData;
+      if(userData.status) {
+        localStorage.setItem('user', JSON.stringify(userData.user));
+        this._cookie.set('a_token', userData.token.access);
+        this._cookie.set('r_token', userData.token.refresh);
+        this.userSubject = userData;
+        return userData;
+      }
     }));
   }
 

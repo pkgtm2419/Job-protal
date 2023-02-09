@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AppService, ToasterService } from 'src/app/_shared/_service';
 
 @Component({
@@ -14,14 +15,16 @@ export class RegistrationComponent  implements OnInit {
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
     password2: new FormControl('', [Validators.required]),
     otp: new FormControl(''),
+    role: new FormControl('', [Validators.required])
   });
 
-  constructor(private toaster: ToasterService, private service: AppService) {}
+  constructor(private toaster: ToasterService, private service: AppService, private router: Router) {}
   emailValidationOTP: boolean = false;
 
   ngOnInit(): void {}
 
   createForm(): void {
+    debugger;
     if(this.emailValidationOTP) {
       this.emailOTP();
       return;
@@ -32,10 +35,15 @@ export class RegistrationComponent  implements OnInit {
     }
     let match = this.form.value;
     delete match.otp;
-    match.role = 'seeker';
     this.service.registerUser(match).subscribe((res: any) => {
-      this.emailValidationOTP = true;
-      this.toaster.success('User Login successfully!');
+      console.log(res);
+      console.log(this.emailValidationOTP);
+      if(res.status) {
+        this.emailValidationOTP = true;
+        this.toaster.success('User Login successfully!');
+      } else {
+        this.toaster.error('User Login Failed!');
+      }
     }),
     (error: any) => {
       this.toaster.error("Please enter valid user and password!"+ error);
@@ -45,7 +53,11 @@ export class RegistrationComponent  implements OnInit {
   emailOTP(): void {
     let match = { otp : this.form.value.otp };
     this.service.emailOTPValidation(match).subscribe((res: any) => {
-      this.toaster.success('User Login successfully!');
+      if(res.status) {
+        this.form.reset();
+        this.router.navigate(['dashboard']);
+        this.toaster.success(res.message);
+      }
     }),
     (error: any) => {
       this.toaster.error("Please enter valid user and password!"+ error);

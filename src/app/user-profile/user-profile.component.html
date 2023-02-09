@@ -1,1 +1,42 @@
-<p>user-profile works!</p>
+<section>
+    <div class="container-fluid">
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <ul class="model-menu">
+                    <li onclick="goBack()"><button class="btn text-white bg-dark"><span class="material-symbols-outlined">arrow_back</span></button></li>
+                    <li (click)="refresh()"><button class="btn text-white btn-primary" title="Refresh"><span class="material-symbols-outlined">refresh</span></button></li> |
+                    <li><a>Profile</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid mt-1">
+        <div class="row d-flex" id="bgCoverImage">
+            <div class="col-6">
+                <div id="profileImage"></div>
+            </div>
+            <div class="col-6 text-end">
+                <button mat-raised-button class="my-2" (click)="openModal()"><mat-icon>edit</mat-icon></button>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row mt-2">
+            <div class="col-3">
+                <div class="card p-3">
+                    <div class="card-title fw-bold">
+                        Basic Details.
+                    </div>
+                    <div class="card-body">
+                        Name
+                    </div>
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="card p-2">
+                    user complete details
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
