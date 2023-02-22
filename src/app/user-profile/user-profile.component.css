@@ -1,0 +1,7 @@
+.mat-expansion-panel-header {
+    background-color:  #0100263d;
+    font-weight: 500;
+}
+.mat-expansion-panel-header {
+    height: 40px !important;
+}

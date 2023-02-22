@@ -24,7 +24,6 @@ export class RegistrationComponent  implements OnInit {
   ngOnInit(): void {}
 
   createForm(): void {
-    debugger;
     if(this.emailValidationOTP) {
       this.emailOTP();
       return;

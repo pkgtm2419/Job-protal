@@ -20,9 +20,11 @@ export class AppComponent {
 
   getLogInUser(): void {
     this.service.user.subscribe((res:any) => {
-      this.user = JSON.parse(res);
-      this.userName = this.user.name;
-      this.role = this.user.role;
+      if(res) {
+        this.user = JSON.parse(res);
+        this.userName = this.user.name;
+        this.role = this.user.role;
+      }
     });
   }
 

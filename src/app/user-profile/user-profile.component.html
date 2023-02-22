@@ -3,8 +3,8 @@
         <div class="row mt-2">
             <div class="col-md-12">
                 <ul class="model-menu">
-                    <li onclick="goBack()"><button class="btn text-white bg-dark"><span class="material-symbols-outlined">arrow_back</span></button></li>
-                    <li (click)="refresh()"><button class="btn text-white btn-primary" title="Refresh"><span class="material-symbols-outlined">refresh</span></button></li> |
+                    <li onclick="goBack()"><button class="btn text-white bg-dark" matTooltip="Previous Page" matTooltipPosition="below"><span class="material-symbols-outlined">arrow_back</span></button></li>
+                    <li (click)="refresh()"><button class="btn text-white btn-primary" matTooltip="Refresh Page Data" matTooltipPosition="below"><span class="material-symbols-outlined">refresh</span></button></li> |
                     <li><a>Profile</a></li>
                 </ul>
             </div>
@@ -16,25 +16,456 @@
                 <div id="profileImage"></div>
             </div>
             <div class="col-6 text-end">
-                <button mat-raised-button class="my-2" (click)="openModal()"><mat-icon>edit</mat-icon></button>
+                <button mat-raised-button class="my-2" (click)="openModal()" matTooltip="Update Profile pic" matTooltipPosition="above"><mat-icon>edit</mat-icon></button>
             </div>
         </div>
     </div>
     <div class="container-fluid">
         <div class="row mt-2">
             <div class="col-3">
-                <div class="card p-3">
-                    <div class="card-title fw-bold">
-                        Basic Details.
-                    </div>
-                    <div class="card-body">
-                        Name
+                <div class="card p-2">
+                    <div *ngFor="let user of userData">
+                        <div class="card-title fw-bold">
+                            Basic Details.
+                        </div>
+                        <div class="card-body">
+                            <div class="row mt-1">
+                                <div class="col-3">Name</div>
+                                <div class="col-1">:</div>
+                                <div class="col-8">{{user.name}}</div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-3">Full Name</div>
+                                <div class="col-1">:</div>
+                                <div class="col-8">{{user.first_name}} {{user.middle_name}} {{user.last_name}}</div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-3">Gender</div>
+                                <div class="col-1">:</div>
+                                <div class="col-8">{{user.gender}}</div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-3">Date of birth</div>
+                                <div class="col-1">:</div>
+                                <div class="col-8">{{user.date_of_birth}}</div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-3">Marital Status</div>
+                                <div class="col-1">:</div>
+                                <div class="col-8">{{user.marital_status ? 'Married' : 'Single'}}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-9">
                 <div class="card p-2">
-                    user complete details
+                    <div class="row">
+                        <form (ngSubmit)="createEmployeeData()" [formGroup]="formFillData">
+                            <div class="container-fluid">
+                                <div class="row my-2">
+                                    <mat-accordion>
+                                        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title> Basic Information </mat-panel-title>
+                                            </mat-expansion-panel-header> 
+                                            <div class="row mt-1">
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>First Name</mat-label>
+                                                        <input matInput placeholder="Enter First Name..." formControlName="firstName" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.firstName.touched && formFillDataControl.firstName.errors?.required">Enter First Name</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Last Name</mat-label>
+                                                        <input matInput placeholder="Enter Last Name..." formControlName="lastName" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.lastName.touched && formFillDataControl.lastName.errors?.required">Enter Last Name</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Gender</mat-label>
+                                                        <mat-select formControlName="gender">
+                                                          <mat-option> Select gender </mat-option>
+                                                          <mat-option value="Male"> Male </mat-option>
+                                                          <mat-option value="Female"> female </mat-option>
+                                                          <mat-option value="Other"> Other </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Contact Number</mat-label>
+                                                        <input matInput placeholder="Enter Contact Number..." #contactNumber maxlength="10" formControlName="contactNumber" type="tel">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-hint align="end">{{contactNumber.value.length}} / 10</mat-hint>
+                                                        <mat-error *ngIf="formFillDataControl.contactNumber.touched && formFillDataControl.contactNumber.errors?.required">Enter Contact Number</mat-error>
+                                                        <mat-error *ngIf="formFillDataControl.contactNumber.touched && formFillDataControl.contactNumber.errors?.pattern">Contact Number must be 10 digit</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>E-Mail</mat-label>
+                                                        <input matInput placeholder="Enter E-Mail..." formControlName="email" type="email">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.email.touched && formFillDataControl.email.errors?.required">Enter E-Mail...</mat-error>
+                                                        <mat-error *ngIf="formFillDataControl.email.touched && formFillDataControl.email.errors?.email">Enter valid E-Mail...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Blood Group</mat-label>
+                                                        <mat-select formControlName="bloodGroup">
+                                                          <mat-option> Select blood group </mat-option>
+                                                          <mat-option value="A+"> A+ </mat-option>
+                                                          <mat-option value="A-"> A- </mat-option>
+                                                          <mat-option value="B+"> B+ </mat-option>
+                                                          <mat-option value="B-"> B- </mat-option>
+                                                          <mat-option value="AB+"> AB+ </mat-option>
+                                                          <mat-option value="AB-"> AB- </mat-option>
+                                                          <mat-option value="O+"> O+ </mat-option>
+                                                          <mat-option value="O-"> O- </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Date Of Birth</mat-label>
+                                                        <input matInput placeholder="Enter Date Of Birth..." formControlName="dateOfBirth" type="date">
+                                                        <mat-hint>mm/dd/yyyy</mat-hint>
+                                                        <mat-error *ngIf="formFillDataControl.dateOfBirth.touched && formFillDataControl.dateOfBirth.errors?.required">Enter Date Of Birth...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Father Name</mat-label>
+                                                        <input matInput placeholder="Enter Father Name..." formControlName="fatherName" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.fatherName.touched && formFillDataControl.fatherName.errors?.required">Enter Father Name...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Mother Name</mat-label>
+                                                        <input matInput placeholder="Enter Mother Name..." formControlName="motherName" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.motherName.touched && formFillDataControl.motherName.errors?.required">Enter Mother Name...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                </div>
+                                <div class="row my-2">
+                                    <mat-accordion>
+                                        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title> Joining Details </mat-panel-title>
+                                            </mat-expansion-panel-header> 
+                                            <div class="row mt-1">
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Date Of Joining</mat-label>
+                                                        <input matInput placeholder="Enter Date Of Joining..." formControlName="dateOfJoining" type="date">
+                                                        <mat-hint>mm/dd/yyyy</mat-hint>
+                                                        <mat-error *ngIf="formFillDataControl.dateOfJoining.touched && formFillDataControl.dateOfJoining.errors?.required">Enter Date Of Joining...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Employee ID</mat-label>
+                                                        <input matInput placeholder="Enter Employee ID..." formControlName="employeeID" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.employeeID.touched && formFillDataControl.employeeID.errors?.required">Enter Employee ID...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Bio Metric Id</mat-label>
+                                                        <input matInput placeholder="Enter Bio Metric Id..." formControlName="bioMetricId" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.bioMetricId.touched && formFillDataControl.bioMetricId.errors?.required">Enter Bio Metric Id...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Employee Type</mat-label>
+                                                        <input matInput placeholder="Enter Employee Type..." formControlName="employeeType" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.employeeType.touched && formFillDataControl.employeeType.errors?.required">Enter Employee Type...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Reporting Manager</mat-label>
+                                                        <input matInput placeholder="Enter Reporting Manager..." formControlName="reportingManager" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.reportingManager.touched && formFillDataControl.reportingManager.errors?.required">Enter Reporting Manager...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Employee Status</mat-label>
+                                                        <input matInput placeholder="Enter Employee Status..." formControlName="employeeStatus" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.employeeStatus.touched && formFillDataControl.employeeStatus.errors?.required">Enter Employee Status...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Employee confirmation date</mat-label>
+                                                        <input matInput placeholder="Enter Employee confirmation date..." formControlName="employeeConfirmationDate" type="date">
+                                                        <mat-hint>mm/dd/yyyy</mat-hint>
+                                                        <mat-error *ngIf="formFillDataControl.employeeConfirmationDate.touched && formFillDataControl.employeeConfirmationDate.errors?.required">Enter Employee confirmation date...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                </div>
+                                <div class="row my-2">
+                                    <mat-accordion>
+                                        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title> Position Information </mat-panel-title>
+                                            </mat-expansion-panel-header> 
+                                            <div class="row mt-1">
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Sub Company</mat-label>
+                                                        <input matInput placeholder="Enter Sub Company..." formControlName="subCompany" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.subCompany.touched && formFillDataControl.subCompany.errors?.required">Enter Sub Company...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Department</mat-label>
+                                                        <input matInput placeholder="Enter Department..." formControlName="department" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.department.touched && formFillDataControl.department.errors?.required">Enter Department...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Sub Department</mat-label>
+                                                        <input matInput placeholder="Enter Sub Department..." formControlName="subDepartment" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.subDepartment.touched && formFillDataControl.subDepartment.errors?.required">Enter Sub Department...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Designation</mat-label>
+                                                        <input matInput placeholder="Enter Designation..." formControlName="designation" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.designation.touched && formFillDataControl.designation.errors?.required">Enter Designation...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Branch</mat-label>
+                                                        <input matInput placeholder="Enter Branch..." formControlName="branch" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.branch.touched && formFillDataControl.branch.errors?.required">Enter Branch...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Sub Branch</mat-label>
+                                                        <input matInput placeholder="Enter Sub Branch..." formControlName="subBranch" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.subBranch.touched && formFillDataControl.subBranch.errors?.required">Enter Sub Branch...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                </div>
+                                <div class="row my-2">
+                                    <mat-accordion>
+                                        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title> Personal Information </mat-panel-title>
+                                            </mat-expansion-panel-header> 
+                                            <div class="row mt-1">
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Personal E-Mail</mat-label>
+                                                        <input matInput placeholder="Enter Personal E-Mail..." formControlName="personalMail" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.personalMail.touched && formFillDataControl.personalMail.errors?.required">Enter Personal E-Mail...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Marital Status</mat-label>
+                                                        <mat-select formControlName="maritalStatus">
+                                                          <mat-option> Select Marital Status </mat-option>
+                                                          <mat-option value="Single"> Single </mat-option>
+                                                          <mat-option value="Married"> Married </mat-option>
+                                                          <mat-option value="Divorce"> Divorce </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Religion</mat-label>
+                                                        <input matInput placeholder="Enter Religion..." formControlName="religion" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.religion.touched && formFillDataControl.religion.errors?.required">Enter Religion...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Permanent Address</mat-label>
+                                                        <textarea matInput placeholder="Enter you complete Permanent Address" formControlName="permanentAddress"></textarea>
+                                                        <mat-error *ngIf="formFillDataControl.permanentAddress.touched && formFillDataControl.permanentAddress.errors?.required">Enter Permanent Address...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Current Address</mat-label>
+                                                        <textarea matInput placeholder="Enter you complete Current Address" formControlName="currentAddress"></textarea>
+                                                        <mat-error *ngIf="formFillDataControl.currentAddress.touched && formFillDataControl.currentAddress.errors?.required">Enter Current Address...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Designation</mat-label>
+                                                        <input matInput placeholder="Enter Designation..." formControlName="designation" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.designation.touched && formFillDataControl.designation.errors?.required">Enter Designation...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Branch</mat-label>
+                                                        <input matInput placeholder="Enter Branch..." formControlName="branch" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.branch.touched && formFillDataControl.branch.errors?.required">Enter Branch...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Sub Branch</mat-label>
+                                                        <input matInput placeholder="Enter Sub Branch..." formControlName="subBranch" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                        <mat-error *ngIf="formFillDataControl.subBranch.touched && formFillDataControl.subBranch.errors?.required">Enter Sub Branch...</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                </div>
+                                <div class="row my-2">
+                                    <mat-accordion>
+                                        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title> Work Experience </mat-panel-title>
+                                            </mat-expansion-panel-header> 
+                                            <div class="row mt-1">
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Company Name</mat-label>
+                                                        <input matInput placeholder="Enter Company Name..." formControlName="companyName" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>From Date</mat-label>
+                                                        <input matInput placeholder="Enter From Date..." formControlName="fromDate" type="date">
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>To Date</mat-label>
+                                                        <input matInput placeholder="Enter To Date..." formControlName="toDate" type="date">
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Designation</mat-label>
+                                                        <input matInput placeholder="Enter Designation..." formControlName="lastDesignation" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Job Description</mat-label>
+                                                        <textarea matInput placeholder="Enter Job Description" formControlName="lastJobDescription"></textarea>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                </div>
+                                <div class="row my-2">
+                                    <mat-accordion>
+                                        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title> Qualification Details </mat-panel-title>
+                                            </mat-expansion-panel-header> 
+                                            <div class="row mt-1">
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Qualification</mat-label>
+                                                        <input matInput placeholder="Enter Qualification..." formControlName="qualification" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Specialization</mat-label>
+                                                        <input matInput placeholder="Enter Specialization..." formControlName="specialization" type="text">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Qualification Type</mat-label>
+                                                        <mat-select formControlName="qualificationType">
+                                                            <mat-option> Select Qualification Type </mat-option>
+                                                            <mat-option value="Regular"> Regular </mat-option>
+                                                            <mat-option value="Full Time"> Full Time </mat-option>
+                                                            <mat-option value="Part Time"> Part Time </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Year of Pass</mat-label>
+                                                        <input matInput placeholder="Enter Pass-out Year..." formControlName="passoutYear" type="number">
+                                                        <mat-icon matSuffix>mode_edit</mat-icon>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                                                        <mat-label>Job Description</mat-label>
+                                                        <textarea matInput placeholder="Enter Job Description" formControlName="lastJobDescription"></textarea>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4"></div>
+                                <div class="col-4">
+                                    <div class="form-group mt-2 d-grid gap-2">
+                                        <button type="submit" mat-raised-button>Update Profile</button>
+                                    </div>
+                                </div>
+                                <div class="col-4"></div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

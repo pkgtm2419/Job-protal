@@ -28,7 +28,6 @@ export class AppService {
   userLogIn(data: Users): Observable<any[]> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' })};
     return this._http.post<any[]>(`${environment._url}/auth/login/`,data, httpOptions).pipe(map((userData: any) => {
-      debugger;
       if(userData.status) {
         console.log(userData);
         localStorage.setItem('user', JSON.stringify(userData.user));
@@ -212,6 +211,11 @@ export class AppService {
   searchSkill(): Observable<any[]> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${this._cookie.get('a_token')}` })};
     return this._http.get<any[]>(`${environment._url}/jp/skill-search`, httpOptions);
+  }
+
+  uploadResume(data: any): Observable<any[]> {
+    const httpOptions = { headers: new HttpHeaders({'Authorization': `Bearer ${this._cookie.get('a_token')}` })};
+    return this._http.post<any[]>(`${environment._url}/jp/bulk-resume-upload/multiple_upload/`, data, httpOptions);
   }
 
 }

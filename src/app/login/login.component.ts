@@ -20,10 +20,12 @@ export class LoginComponent implements OnInit {
     if (this.service.getToken()) {
       this.service.user.subscribe((res: any) => {
         res = JSON.parse(res);
-        if(res.is_verified) {
-          this.router.navigate(['dashboard']);
-        } else {
-          this.service.logOut();
+        if(res) {
+          if(res.is_verified) {
+            this.router.navigate(['dashboard']);
+          } else {
+            this.service.logOut();
+          }
         }
       })
     } else {
