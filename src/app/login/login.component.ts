@@ -22,7 +22,11 @@ export class LoginComponent implements OnInit {
         res = JSON.parse(res);
         if(res) {
           if(res.is_verified) {
-            this.router.navigate(['dashboard']);
+            if(res.role == 'candidate') {
+              this.router.navigate(['user-profile']);
+            } else {
+              this.router.navigate(['dashboard']);
+            }
           } else {
             this.service.logOut();
           }

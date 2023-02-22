@@ -41,8 +41,6 @@ export class ResumeComponent {
 
   constructor(private _mdr: MatDialogRef<ResumeComponent>, private service: AppService, private toaster: ToasterService) {}
 
-  ngOnInit(): void { }
-
   onFileSelect(target: any) {
     this.resumeFile = [];
     var files = target.files;
@@ -60,15 +58,14 @@ export class ResumeComponent {
     for (let i = 0; i < this.resumeFile.length; i++) {
       formData.append('files', this.resumeFile[i]);
     }
-    console.log(formData);
     this.service.uploadResume(formData).subscribe((res: any) => {
       if(res.status) {
-        this.ngOnInit();
         this.resumeFile = [];
         this.toaster.success(res.message);
       } else {
         this.toaster.warning(res.message);
       }
+      this.closeDialog(res.status);
     }),
     (error: any) => {
       this.toaster.error("Some technical error "+error);
