@@ -12,9 +12,8 @@ import { ResumeComponent } from './upload-resume.componenet';
   templateUrl: './candidate-master.component.html',
   styleUrls: ['./candidate-master.component.css']
 })
+
 export class CandidateMasterComponent {
-  searchData: any;
-  resumeFile: any;
   candidateList: any;
   limits: any = [10, 50, 100, 500];
   displayedColumns: string[] = [];
@@ -37,8 +36,6 @@ export class CandidateMasterComponent {
     this.displayedColumns = Object.keys(this.candidateList[0]);
     this.displayedColumns.push('Action');
   }
-
-  
 
   openModal() {
     this.matDialogRef = this.matDialog.open(ResumeComponent, { disableClose: true });

@@ -7,24 +7,24 @@ import { ToasterService, AppService } from "../../_shared/_service";
   template: `
     <style>
       h2 { margin: 0 !important; }
+      .width-model { width: 40rem;}
     </style>
-    <div style="width:500px">
+    <div class="width-model">
       <div class="model">
         <div class="modal-header bg-primary" style="border-top:2px solid black;">
           <h2 mat-dialog-title class="text-white modal-title">Upload Candidate Resumes</h2>
           <button mat-button (click)="closeDialog(false)" class="me-3" aria-label="Close"><mat-icon>close</mat-icon></button>
         </div>
-        <div mat-dialog-content class="modal-body" style="height: 15rem;">
+        <div mat-dialog-content class="modal-body" style="height: 20rem;">
           <div class="row">
             <div class="input-group mb-1">
-              <input type="file" class="form-control" id="resume" accept=".pdf" (change)="onFileSelect($event.target)" multiple>
-              <label class="input-group-text" for="resume">Upload</label>
+              <input type="file" class="form-control" accept=".pdf,.doc, .docx" (change)="onFileSelect($event.target)" multiple>
             </div>
           </div>
           <div class="row">
             <ul class="list-group list-group-flush">
               <li class="list-group-item"></li>
-              <li class="list-group-item" *ngFor="let file of resumeFile; let i = index">{{file.name}}</li>
+              <li class="list-group-item d-flex" *ngFor="let file of resumeFile; let i = index"><button mat-button (click)="removeSelectedCv(file.name)"><span class="material-symbols-outlined">close</span></button> &nbsp; {{file.name}}</li>
               <li class="list-group-item"></li>
             </ul>
           </div>
@@ -37,7 +37,7 @@ import { ToasterService, AppService } from "../../_shared/_service";
     </div>`
 })
 export class ResumeComponent {
-  resumeFile: any;
+  resumeFile: any = [];
 
   constructor(private _mdr: MatDialogRef<ResumeComponent>, private service: AppService, private toaster: ToasterService) {}
 
@@ -47,6 +47,12 @@ export class ResumeComponent {
     for (let i = 0; i < files.length; i++) {
       this.resumeFile.push(files[i]);
     }
+  }
+
+  removeSelectedCv(file: any) {
+    this.resumeFile = this.resumeFile.filter((item: any) => {
+      return item.name != file;
+    });
   }
 
   closeDialog(status: boolean) {
