@@ -11,6 +11,7 @@ export class AppComponent {
   user: any;
   userName: any;
   role: any;
+  profileImage: any;
 
   constructor(private service: AppService, public router: Router) {}
 
@@ -22,6 +23,8 @@ export class AppComponent {
     this.service.user.subscribe((res:any) => {
       if(res) {
         this.user = JSON.parse(res);
+        // console.log(this.user);
+        this.profileImage = (this.user.profile_pic) ? `http://172.16.15.251:8002${this.user.profile_pic}` : `${'../assets/profile.png'}`;
         this.userName = this.user.name;
         this.role = this.user.role;
       }

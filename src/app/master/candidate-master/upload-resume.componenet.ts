@@ -60,6 +60,10 @@ export class ResumeComponent {
   }
 
   uploadResume(): void {
+    if(!(this.resumeFile.length > 0)) {
+      this.toaster.error('Please select any files!');
+      return;
+    }
     let formData: FormData = new FormData();
     for (let i = 0; i < this.resumeFile.length; i++) {
       formData.append('files', this.resumeFile[i]);

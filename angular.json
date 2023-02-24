@@ -26,12 +26,9 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
-              "./node_modules/ngx-toastr/toastr.css",
-              "src/styles.css",
               "src/style/bootstrap.css",
-              "src/style/bootstrap-grid.css",
-              "src/style/bootstrap-reboot.css",
-              "src/style/bootstrap-utilities.css"
+              "src/styles.css",
+              "./node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
               "src/javascript/bootstrap.bundle.js",

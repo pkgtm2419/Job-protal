@@ -218,4 +218,10 @@ export class AppService {
     return this._http.post<any[]>(`${environment._url}/jp/bulk-resume-upload/multiple_upload/`, data, httpOptions);
   }
 
+  searchFromCV(key: any): Observable<any[]> {
+    const httpOptions = { headers: new HttpHeaders({'Authorization': `Bearer ${this._cookie.get('a_token')}` })};
+    let url = (key) ? `${environment._url}/jp/bulk-resume-search?search=${key}` : `${environment._url}/jp/bulk-resume-search`;
+    return this._http.get<any[]>(url, httpOptions);
+  }
+
 }

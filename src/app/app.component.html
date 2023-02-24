@@ -14,7 +14,7 @@
                 <mat-toolbar-row *ngIf="user">
                     <button mat-button [routerLink]="['dashboard']" routerLinkActive="router-link-active"><mat-icon>home</mat-icon> Job Portal</button>
                     <span class="spacer"></span>
-                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Log Out"><mat-icon>more_vert</mat-icon></button>
+                    <button style="border: 0; background-color: transparent;" [matMenuTriggerFor]="menu" aria-label="Log Out"><img src="{{profileImage}}" class="img-thumbnail" style="border-radius: 50%;" width="50"></button>
                     <mat-menu #menu="matMenu" xPosition="before">
                         <button mat-menu-item [routerLink]="['user-profile']" routerLinkActive="router-link-active" ><mat-icon>settings</mat-icon><span>{{userName}} Profile</span></button>
                         <button mat-menu-item (click)="logOutUser()"><mat-icon>close</mat-icon><span>Sign out</span></button>

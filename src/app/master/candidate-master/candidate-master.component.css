@@ -1,0 +1,11 @@
+.mdc-data-table__header-row {
+    height: 40px;
+    background-color: #0d6efd;
+    border: 1px solid #727272;
+}
+.mdc-data-table__header-row th {
+    color: white;
+}
+.mat-mdc-table .mdc-data-table__row {
+    height: 45px;
+}

@@ -23,18 +23,43 @@ export class CandidateMasterComponent {
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
   matDialogRef!: MatDialogRef<ResumeComponent>;
+  match: any;
 
   constructor(private matDialog: MatDialog, private toaster: ToasterService, private service: AppService) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.getData(this.match);
+  }
+  
+  search(): void {
+    this.getData(this.match);
+  }
 
-  getData(): void {
-    this.limits.push(this.candidateList.length);
-    this.dataSource = new MatTableDataSource(this.candidateList);
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.displayedColumns = Object.keys(this.candidateList[0]);
-    this.displayedColumns.push('Action');
+  getData(data: string): void {
+    this.service.searchFromCV(data).subscribe((res: any) => {
+      if(res.length > 0) {
+        this.candidateList = res;
+        this.limits.push(this.candidateList.length);
+        this.dataSource = new MatTableDataSource(this.candidateList);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+        this.displayedColumns = ["id", "resume_file", "person_name", "phone_no", "email_address", "created_at", "Action"];
+        this.toaster.success(res.message);
+      } else {
+        this.toaster.error(res.message);
+      }
+    }), 
+    (error: any) => {
+      this.toaster.error("Some technical error "+error);
+    }
+  }
+
+  removeProfile(data: any): void {
+    console.log(data);
+  }
+  
+  openProfile(data: any): void {
+    console.log(data);
   }
 
   openModal() {
@@ -47,8 +72,8 @@ export class CandidateMasterComponent {
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.match = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = this.match.trim().toLowerCase();
   }
 
   download(): void {
