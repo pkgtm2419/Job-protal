@@ -14,10 +14,12 @@ import { ResumeComponent } from './upload-resume.componenet';
 })
 
 export class CandidateMasterComponent {
-  candidateList: any;
-  limits: any = [10, 50, 100, 500];
+  candidateList: any= [];
+  limits: any = [25, 50, 100, 250, 500];
+  pageData = 1;
+  limit: any = 25;
   displayedColumns: string[] = [];
-  dataSource!: MatTableDataSource<any>;
+  dataSource!: MatTableDataSource<any[]>;
   @ViewChild(MatSort, { static: true })
   sort!: MatSort;
   @ViewChild(MatPaginator)
@@ -25,7 +27,7 @@ export class CandidateMasterComponent {
   matDialogRef!: MatDialogRef<ResumeComponent>;
   match: any;
   layoutStyle: any = 'grid';
-  candidateData: any;
+  candidateData: any = [];
 
   constructor(private matDialog: MatDialog, private toaster: ToasterService, private service: AppService) { }
 
@@ -41,13 +43,17 @@ export class CandidateMasterComponent {
     this.getData(this.match);
   }
 
+  dataLimit(): void{
+    this.limit = ( document.getElementById('limit') as HTMLInputElement).value;
+  }
+
   getData(data: string): void {
     this.service.searchFromCV(data).subscribe((res: any) => {
       if(res.status) {
         this.candidateList = res.data;
         this.candidateData = res.data;
         this.limits.push(this.candidateList.length);
-        this.dataSource = new MatTableDataSource(this.candidateList);
+        this.dataSource = new MatTableDataSource(res.data);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
         this.displayedColumns = ["id", "resume_file", "person_name", "phone_no", "email_address", "created_at", "Action"];

@@ -11,7 +11,7 @@
         </div>
         <div class="row p-2">
             <div class="col-md-12 shadow card p-1">
-                <div class="row">
+                <div class="row px-2">
                     <div class="col-md-5">
                         <div class="searchBar d-flex justify-content-center align-items-center">
                             <span class="material-symbols-outlined">search</span>
@@ -30,7 +30,12 @@
                     </div>
                     <div class="col-md-5 align-self-end text-end mb-4">
                         <button type="button" mat-raised-button color="primary" (click)="openUploadModal()" class="me-2" matTooltip="Upload new candidate Resume" matTooltipPosition="above"><mat-icon>upload</mat-icon> Upload Resume</button>
-                        <button type="button" mat-raised-button style="background-color: green;color: white;" (click)="download()" matTooltip="Download selected records in Excel." matTooltipPosition="above"><span class="material-symbols-outlined">cloud_download</span></button>
+                        <button type="button" mat-raised-button class="me-2" style="background-color: green;color: white;" (click)="download()" matTooltip="Download selected records in Excel." matTooltipPosition="above"><span class="material-symbols-outlined">cloud_download</span></button>
+                        <label for="limit" *ngIf="layoutStyle == 'grid'">
+                            <select id="limit" name="limit" class="form-select" (click)="dataLimit()">
+                                <option *ngFor="let limit of limits" value="{{limit}}">{{limit}}</option>
+                            </select>
+                        </label>
                     </div>
                 </div>
                 <section *ngIf="layoutStyle == 'table'">
@@ -84,21 +89,24 @@
                             <div class="row px-2">
                                 <div class="card">
                                     <div class="row" style="background-color: #0d6efd1c;">
-                                        <div class="col-md-6 p-2" *ngFor="let item of candidateData; let i = index">
+                                        <div class="col-md-6 p-1" *ngFor="let item of candidateData | paginate: { itemsPerPage: limit, currentPage: pageData }; let i = index">
                                             <mat-card class="shadow">
                                                 <mat-card-header>
-                                                  <mat-card-title>{{item.person_name | titlecase}}</mat-card-title>
-                                                  <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+                                                    <mat-card-title>{{item.person_name | titlecase}}</mat-card-title>
+                                                    <mat-card-subtitle>{{item.phone_no}}</mat-card-subtitle>
+                                                    <mat-card-subtitle>{{item.email_address}}</mat-card-subtitle>
                                                 </mat-card-header>
                                                 <mat-card-content>
-                                                  <p>This card indeterminates progress bar.</p>
-                                                  <p>{{item | json}}</p>
+                                                    <p><strong matTooltip="Candidate ID." matTooltipPosition="above">{{item.id}}:- &nbsp; </strong> {{item | json}}</p>
                                                 </mat-card-content>
                                                 <mat-card-actions>
-                                                  <button mat-button><a href="{{item.resume_file}}" target="_blank" mat-button color="primary" download><span class="material-symbols-outlined">download</span></a></button>
-                                                  <button mat-button>SHARE</button>
+                                                    <a href="{{item.resume_file}}" matTooltip="Download Candidate Resume." matTooltipPosition="above" target="_blank" download="{{item.resume_file}}"><button mat-button><span class="material-symbols-outlined">download</span></button></a>
+                                                    <a href="#" matTooltip="Share Candidate Details." matTooltipPosition="above"><button mat-button><span class="material-symbols-outlined">share</span></button></a>
                                                 </mat-card-actions>
-                                              </mat-card>
+                                            </mat-card>
+                                        </div>
+                                        <div class="input-group-icon input-group-icon-right text-center mt-2">
+                                            <pagination-controls (pageChange)="pageData = $event"></pagination-controls>
                                         </div>
                                     </div>
                                 </div>
