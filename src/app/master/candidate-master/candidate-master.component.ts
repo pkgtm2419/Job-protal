@@ -24,11 +24,17 @@ export class CandidateMasterComponent {
   paginator!: MatPaginator;
   matDialogRef!: MatDialogRef<ResumeComponent>;
   match: any;
+  layoutStyle: any = 'grid';
+  candidateData: any;
 
   constructor(private matDialog: MatDialog, private toaster: ToasterService, private service: AppService) { }
 
   ngOnInit(): void {
     this.getData(this.match);
+  }
+
+  changeLayout(type: string): void {
+    this.layoutStyle = (type == 'table') ? "grid" : (type == 'grid') ? "table" : "grid";
   }
   
   search(): void {
@@ -37,8 +43,9 @@ export class CandidateMasterComponent {
 
   getData(data: string): void {
     this.service.searchFromCV(data).subscribe((res: any) => {
-      if(res.length > 0) {
-        this.candidateList = res;
+      if(res.status) {
+        this.candidateList = res.data;
+        this.candidateData = res.data;
         this.limits.push(this.candidateList.length);
         this.dataSource = new MatTableDataSource(this.candidateList);
         this.dataSource.sort = this.sort;
@@ -62,7 +69,7 @@ export class CandidateMasterComponent {
     console.log(data);
   }
 
-  openModal() {
+  openUploadModal() {
     this.matDialogRef = this.matDialog.open(ResumeComponent, { disableClose: true });
     this.matDialogRef.afterClosed().subscribe((res: any) => {
       if(res) {
@@ -74,6 +81,10 @@ export class CandidateMasterComponent {
   applyFilter(event: Event) {
     this.match = (event.target as HTMLInputElement).value;
     this.dataSource.filter = this.match.trim().toLowerCase();
+    let data = this.candidateList;
+    this.candidateData = data.filter((item: any) => {
+      return (JSON.stringify(item).toLowerCase().indexOf(this.match.trim().toLowerCase()) > -1);
+    });
   }
 
   download(): void {
