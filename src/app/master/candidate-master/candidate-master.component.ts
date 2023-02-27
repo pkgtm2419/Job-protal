@@ -1,11 +1,12 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Component, ViewChild } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { ResumeComponent } from './upload-resume.component';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AppService, ToasterService } from 'src/app/_shared/_service';
 import * as XLSX from 'xlsx';
-import { ResumeComponent } from './upload-resume.componenet';
 
 @Component({
   selector: 'app-candidate-master',
@@ -20,23 +21,41 @@ export class CandidateMasterComponent {
   limit: any = 25;
   displayedColumns: string[] = [];
   dataSource!: MatTableDataSource<any[]>;
-  @ViewChild(MatSort, { static: true })
+  @ViewChild(MatSort)
   sort!: MatSort;
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
   matDialogRef!: MatDialogRef<ResumeComponent>;
   match: any;
-  layoutStyle: any = 'grid';
+  layoutStyle: any = 'table';
   candidateData: any = [];
-
+  filterForm: any;
+  
   constructor(private matDialog: MatDialog, private toaster: ToasterService, private service: AppService) { }
-
+  
   ngOnInit(): void {
     this.getData(this.match);
+    this.filterForm = new FormGroup({
+      location: new FormControl(''),
+      angular: new FormControl('angular'),
+      nodejs: new FormControl('nodejs'),
+      javascript: new FormControl('javascript'),
+      html: new FormControl('html'),
+      css: new FormControl('css'),
+      git: new FormControl('git'),
+      docker: new FormControl('docker')
+    });
   }
 
-  changeLayout(type: string): void {
-    this.layoutStyle = (type == 'table') ? "grid" : (type == 'grid') ? "table" : "grid";
+  applyCandidateFilter(): void {
+    if(!this.filterForm.valid) {
+      this.toaster.error("Filter Applying issue!");
+      return;
+    }
+    console.log(Object.values(this.filterForm.value));
+    this.match = Object.values(this.filterForm.value);
+    this.match = this.match.filter((item: any) => item);
+    this.getData(this.match);
   }
   
   search(): void {
@@ -52,10 +71,10 @@ export class CandidateMasterComponent {
       if(res.status) {
         this.candidateList = res.data;
         this.candidateData = res.data;
-        this.limits.push(this.candidateList.length);
-        this.dataSource = new MatTableDataSource(res.data);
+        this.dataSource = new MatTableDataSource(this.candidateList);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.limits.push(this.candidateList.length);
         this.displayedColumns = ["id", "resume_file", "person_name", "phone_no", "email_address", "created_at", "Action"];
         this.toaster.success(res.message);
       } else {
@@ -65,6 +84,10 @@ export class CandidateMasterComponent {
     (error: any) => {
       this.toaster.error("Some technical error "+error);
     }
+  }
+
+  changeLayout(type: any): void {
+    this.layoutStyle = (type == 'table') ? "grid" : (type == 'grid') ? "table" : "grid";
   }
 
   removeProfile(data: any): void {
