@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AppService, ToasterService } from 'src/app/_shared/_service';
 import * as XLSX from 'xlsx';
+import { FilterComponent } from './filter-resume.component';
 
 @Component({
   selector: 'app-candidate-master',
@@ -26,6 +27,7 @@ export class CandidateMasterComponent {
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
   matDialogRef!: MatDialogRef<ResumeComponent>;
+  filterPage!: MatDialogRef<FilterComponent>;
   match: any;
   layoutStyle: any = 'grid';
   candidateData: any = [];
@@ -106,6 +108,21 @@ export class CandidateMasterComponent {
     this.matDialogRef.afterClosed().subscribe((res: any) => {
       if(res) {
         this.ngOnInit();
+      }
+    });
+  }
+
+  openFilterModal() {
+    this.filterPage = this.matDialog.open(FilterComponent, { disableClose: true });
+    this.filterPage.afterClosed().subscribe((res: any) => {
+      if(res.status) {
+        this.filterForm.patchValue(res.data);
+        this.match = Object.values(res.data);
+        this.match = this.match.filter((item: any) => item);
+        this.getData(this.match);
+        this.toaster.success(res.message);
+      } else {
+        this.toaster.success(res.message);
       }
     });
   }

@@ -19,7 +19,8 @@
                                 <mat-label>Search</mat-label>
                                 <input matInput (keyup)="applyFilter($event)" placeholder="Enter search text..." #input>
                             </mat-form-field>
-                            <button mat-button (click)="search()" style="margin-bottom: 20px;" matTooltip="Search if data not in table." matTooltipPosition="above">Search</button>
+                            <button mat-raised-button color="primary" (click)="search()" style="margin-bottom: 24px;padding: 28px;" matTooltip="Search if data not in table." matTooltipPosition="above">Search</button>
+                            <button mat-raised-button (click)="match = '';ngOnInit()" style="margin-bottom: 24px;padding: 28px;" matTooltip="Clear filter." matTooltipPosition="above">Clear</button>
                         </div>
                     </div>
                     <div class="col-md-2 d-flex justify-content-center align-items-center">
@@ -83,13 +84,21 @@
                    <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-2 card">
+                            <div class="row bg-dark text-white pt-2 mb-2">
+                                <div class="col-6">
+                                    <h2>Filter Bar</h2>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <button mat-raised-button (click)="openFilterModal()" matTooltip="Open filter model page" matTooltipPosition="above"><mat-icon>edit</mat-icon></button>
+                                </div>
+                            </div>
                             <div class="row">
                                 <form [formGroup]="filterForm" class="mb-2" (ngSubmit)="applyCandidateFilter()">
                                     <div class="row">
                                         <p class="d-grid gap-2 px-2 my-2">
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Location</mat-label>
-                                                <input matInput formControlName="location" type="text">
+                                                <input matInput formControlName="location" type="text" placeholder="Pune,...">
                                             </mat-form-field>
                                         </p>
                                         <ul style="list-style-type:none;">

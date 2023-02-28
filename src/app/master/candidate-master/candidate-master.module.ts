@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/material.module';
 import { ResumeComponent } from './upload-resume.component';
 import { CandidateMasterComponent } from './candidate-master.component';
+import { FilterComponent } from './filter-resume.component';
 
 const routes: Routes = [
   { path: '', component: CandidateMasterComponent },
@@ -13,7 +14,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     CandidateMasterComponent,
-    ResumeComponent
+    ResumeComponent,
+    FilterComponent
   ],
   imports: [
     CommonModule,
