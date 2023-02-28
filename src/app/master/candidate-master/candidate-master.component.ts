@@ -88,6 +88,9 @@ export class CandidateMasterComponent {
 
   changeLayout(type: any): void {
     this.layoutStyle = (type == 'table') ? "grid" : (type == 'grid') ? "table" : "grid";
+    if(this.layoutStyle == 'table') {
+      this.getData(this.match);
+    }
   }
 
   removeProfile(data: any): void {
