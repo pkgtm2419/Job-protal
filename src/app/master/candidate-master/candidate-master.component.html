@@ -84,7 +84,7 @@
                     <div class="row">
                         <div class="col-md-2 card">
                             <div class="row">
-                                <form [formGroup]="filterForm" (ngSubmit)="applyCandidateFilter()">
+                                <form [formGroup]="filterForm" class="mb-2" (ngSubmit)="applyCandidateFilter()">
                                     <div class="row">
                                         <p class="d-grid gap-2 px-2 my-2">
                                             <mat-form-field appearance="outline">
@@ -107,6 +107,7 @@
                                         </div>
                                     </div>
                                 </form>
+                                <button mat-raised-button type="submit" (click)="match = '';ngOnInit()">Clear Filter</button>
                             </div>
                         </div>
                         <div class="col-md-10">

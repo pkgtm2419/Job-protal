@@ -27,7 +27,7 @@ export class CandidateMasterComponent {
   paginator!: MatPaginator;
   matDialogRef!: MatDialogRef<ResumeComponent>;
   match: any;
-  layoutStyle: any = 'table';
+  layoutStyle: any = 'grid';
   candidateData: any = [];
   filterForm: any;
   
