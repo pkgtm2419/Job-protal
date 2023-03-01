@@ -75,7 +75,7 @@
                             </ng-container>
                             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                            <tr class="mat-row" *matNoDataRow class="text-center"> No data matching the filter "{{input.value}}"</tr>
+                            <tr class="text-center" *matNoDataRow> No data matching the filter "{{input.value}}"</tr>
                         </table>
                     </div>
                     <mat-paginator [pageSizeOptions]="limits" showFirstLastButtons aria-label="Select page of periodic elements"> </mat-paginator>
@@ -102,14 +102,15 @@
                                             </mat-form-field>
                                         </p>
                                         <ul style="list-style-type:none;">
-                                            <h3>Skill:</h3>
-                                            <li><mat-checkbox color="primary" formControlName="angular">Angular</mat-checkbox></li>
-                                            <li><mat-checkbox color="primary" formControlName="nodejs">NodeJS</mat-checkbox></li>
-                                            <li><mat-checkbox color="primary" formControlName="html">HTML</mat-checkbox></li>
-                                            <li><mat-checkbox color="primary" formControlName="javascript">JavaScript</mat-checkbox></li>
-                                            <li><mat-checkbox color="primary" formControlName="css">CSS</mat-checkbox></li>
-                                            <li><mat-checkbox color="primary" formControlName="git">Git</mat-checkbox></li>
-                                            <li><mat-checkbox color="primary" formControlName="docker">Docker</mat-checkbox></li>
+                                            <div class="row d-flex">
+                                                <div class="col-6">
+                                                    <h3 class="mt-1">Skill:</h3>
+                                                </div>
+                                                <div class="col-6 text-end">
+                                                    <button mat-button color="secondary" (click)="clearCheckBox()" matTooltip="Clear all checkbox" matTooltipPosition="above"><mat-icon>clear</mat-icon></button>
+                                                </div>
+                                            </div>
+                                            <li *ngFor="let item of checkBox"><mat-checkbox color="primary" [(ngModel)]="item.checked" formControlName="{{item.name}}">{{item.name}}</mat-checkbox></li>
                                         </ul>
                                         <div class="px-2 gap-2 d-grid">
                                             <button mat-raised-button type="submit" color="primary">Apply Filter</button>

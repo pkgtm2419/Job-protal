@@ -28,10 +28,19 @@ export class CandidateMasterComponent {
   paginator!: MatPaginator;
   matDialogRef!: MatDialogRef<ResumeComponent>;
   filterPage!: MatDialogRef<FilterComponent>;
-  match: any;
+  match: any = [];
   layoutStyle: any = 'grid';
   candidateData: any = [];
   filterForm: any;
+  checkBox: any = [
+    {checked: false, name: "angular"},
+    {checked: false, name: "nodejs"},
+    {checked: false, name: "javascript"},
+    {checked: false, name: "html"},
+    {checked: false, name: "css"},
+    {checked: false, name: "git"},
+    {checked: false, name: "docker"}
+  ];
   
   constructor(private matDialog: MatDialog, private toaster: ToasterService, private service: AppService) { }
   
@@ -39,24 +48,29 @@ export class CandidateMasterComponent {
     this.getData(this.match);
     this.filterForm = new FormGroup({
       location: new FormControl(''),
-      angular: new FormControl('angular'),
-      nodejs: new FormControl('nodejs'),
-      javascript: new FormControl('javascript'),
-      html: new FormControl('html'),
-      css: new FormControl('css'),
-      git: new FormControl('git'),
-      docker: new FormControl('docker')
+      angular: new FormControl(''),
+      nodejs: new FormControl(''),
+      javascript: new FormControl(''),
+      html: new FormControl(''),
+      css: new FormControl(''),
+      git: new FormControl(''),
+      docker: new FormControl('')
     });
   }
 
   applyCandidateFilter(): void {
-    if(!this.filterForm.valid) {
-      this.toaster.error("Filter Applying issue!");
-      return;
+    this.match = this.checkBox.map((item: any) => {
+      if(item.checked) {
+        return item.name;
+      }
+    }).filter((item: any) => item);
+    this.checkBox.forEach((ele: any) => {
+      delete this.filterForm.value[ele.name];
+    });
+    let keyValue = Object.values(this.filterForm.value).toString();
+    if(keyValue) {
+      this.match.push(keyValue);
     }
-    console.log(Object.values(this.filterForm.value));
-    this.match = Object.values(this.filterForm.value);
-    this.match = this.match.filter((item: any) => item);
     this.getData(this.match);
   }
   
@@ -76,8 +90,10 @@ export class CandidateMasterComponent {
         this.dataSource = new MatTableDataSource(this.candidateList);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-        this.limits.push(this.candidateList.length);
         this.displayedColumns = ["id", "resume_file", "person_name", "phone_no", "email_address", "created_at", "Action"];
+        this.limits.push(this.candidateList.length);
+        this.limits = [...new Set(this.limits)];
+        this.limits = this.limits.sort((a: number, b: number) => {return a-b});
         this.toaster.success(res.message);
       } else {
         this.toaster.error(res.message);
@@ -127,13 +143,22 @@ export class CandidateMasterComponent {
     });
   }
 
-  applyFilter(event: Event) {
-    this.match = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = this.match.trim().toLowerCase();
-    let data = this.candidateList;
-    this.candidateData = data.filter((item: any) => {
-      return (JSON.stringify(item).toLowerCase().indexOf(this.match.trim().toLowerCase()) > -1);
+  clearCheckBox(): void {
+    this.checkBox = this.checkBox.map((element: any) => {
+      return element.checked = false;
     });
+  }
+
+  applyFilter(event: Event) {
+    if(this.layoutStyle == 'table') {
+      this.match = (event.target as HTMLInputElement).value;
+      this.dataSource.filter = this.match.trim().toLowerCase();
+    } else {
+      let data = this.candidateList;
+      this.candidateData = data.filter((item: any) => {
+        return (JSON.stringify(item).toLowerCase().indexOf(this.match.trim().toLowerCase()) > -1);
+      });
+    }
   }
 
   download(): void {
