@@ -96,6 +96,18 @@
                                 <form [formGroup]="filterForm" class="mb-2" (ngSubmit)="applyCandidateFilter()">
                                     <div class="row">
                                         <p class="d-grid gap-2 px-2 my-2">
+                                            <mat-label>Experience in Year</mat-label>
+                                            <mat-slider min="0" max="25" step="1" showTickMarks discrete [displayWith]="formatLabel">
+                                                <input matSliderThumb formControlName="YOE">
+                                            </mat-slider>
+                                        </p>
+                                        <p class="d-grid gap-2 px-2 my-2">
+                                            <mat-label>Experience in month</mat-label>
+                                            <mat-slider min="0" max="11" step="1" showTickMarks discrete [displayWith]="formatLabel">
+                                                <input matSliderThumb formControlName="YOEinMonth">
+                                            </mat-slider>
+                                        </p>
+                                        <p class="d-grid gap-2 px-2 my-2">
                                             <mat-form-field appearance="outline">
                                                 <mat-label>Location</mat-label>
                                                 <input matInput formControlName="location" type="text" placeholder="Pune,...">
@@ -127,12 +139,12 @@
                                         <div class="col-md-6 p-1" *ngFor="let item of candidateData | paginate: { itemsPerPage: limit, currentPage: pageData }; let i = index">
                                             <mat-card class="shadow">
                                                 <mat-card-header>
-                                                    <mat-card-title>{{item.person_name | titlecase}}</mat-card-title>
+                                                    <mat-card-title><strong matTooltip="Candidate ID." matTooltipPosition="above">{{item.id}}:- </strong>{{item.person_name | titlecase}} (<strong>item.profile</strong>)</mat-card-title>
                                                     <mat-card-subtitle>{{item.phone_no}}</mat-card-subtitle>
                                                     <mat-card-subtitle>{{item.email_address}}</mat-card-subtitle>
                                                 </mat-card-header>
                                                 <mat-card-content>
-                                                    <p><strong matTooltip="Candidate ID." matTooltipPosition="above">{{item.id}}:- &nbsp; </strong> {{item | json}}</p>
+                                                    <p>{{item | json}}</p>
                                                 </mat-card-content>
                                                 <mat-card-actions>
                                                     <a href="{{item.resume_file}}" matTooltip="Download Candidate Resume." matTooltipPosition="above" target="_blank" download="{{item.resume_file}}"><button mat-button><span class="material-symbols-outlined">download</span></button></a>

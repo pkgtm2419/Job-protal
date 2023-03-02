@@ -54,7 +54,9 @@ export class CandidateMasterComponent {
       html: new FormControl(''),
       css: new FormControl(''),
       git: new FormControl(''),
-      docker: new FormControl('')
+      docker: new FormControl(''),
+      YOEinMonth: new FormControl(''),
+      YOE: new FormControl('')
     });
   }
 
@@ -145,8 +147,13 @@ export class CandidateMasterComponent {
 
   clearCheckBox(): void {
     this.checkBox = this.checkBox.map((element: any) => {
-      return element.checked = false;
+      element.checked = false;
+      return element;
     });
+  }
+
+  formatLabel(value: number): string {
+    return `${value}`;
   }
 
   applyFilter(event: Event) {
