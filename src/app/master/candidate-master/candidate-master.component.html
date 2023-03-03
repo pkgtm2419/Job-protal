@@ -135,13 +135,30 @@
                         <div class="col-md-10">
                             <div class="row px-2">
                                 <div class="card">
+                                    <div class="row text-end py-2">
+                                        <div class="col-8"></div>
+                                        <div class="col-4">
+                                            <div class="row">
+                                                <div class="col-2"></div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-primary shadow-sm d-flex" (click)="openNotificationModal()" *ngIf="selectedCandidate.length" matTooltip="Send whatsapp and mail notification." matTooltipPosition="above">Send&nbsp;<span class="material-symbols-outlined">send</span></button>
+                                                </div>
+                                                <div class="col-7">
+                                                    <button mat-raised-button (click)="isSelection = !isSelection"><mat-icon>check_box</mat-icon> Select Candidate</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row" style="background-color: #0d6efd1c;">
-                                        <div class="col-md-6 p-1" *ngFor="let item of candidateData | paginate: { itemsPerPage: limit, currentPage: pageData }; let i = index">
+                                        <div [ngClass]="isSelection ? 'p-2' : 'p-1'" class="col-md-6" *ngFor="let item of candidateData | paginate: { itemsPerPage: limit, currentPage: pageData }; let i = index">
                                             <mat-card class="shadow">
                                                 <mat-card-header>
-                                                    <mat-card-title><strong matTooltip="Candidate ID." matTooltipPosition="above">{{item.id}}:- </strong>{{item.person_name | titlecase}} (<strong>item.profile</strong>)</mat-card-title>
-                                                    <mat-card-subtitle>{{item.phone_no}}</mat-card-subtitle>
-                                                    <mat-card-subtitle>{{item.email_address}}</mat-card-subtitle>
+                                                    <mat-card-title-group>
+                                                        <mat-card-title><strong matTooltip="Candidate ID." matTooltipPosition="above">{{item.id}}:- </strong>{{item.person_name | titlecase}} (<strong>item.profile</strong>)</mat-card-title>
+                                                        <mat-card-subtitle>{{item.phone_no}}</mat-card-subtitle>
+                                                        <mat-card-subtitle>{{item.email_address}}</mat-card-subtitle>
+                                                        <div mat-card-sm-image *ngIf="isSelection"><mat-checkbox color="primary" (click)="getSelectedCandidate(item)"></mat-checkbox></div>
+                                                    </mat-card-title-group>
                                                 </mat-card-header>
                                                 <mat-card-content>
                                                     <p>{{item | json}}</p>

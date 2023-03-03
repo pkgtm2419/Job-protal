@@ -6,6 +6,7 @@ import { MaterialModule } from 'src/app/material.module';
 import { ResumeComponent } from './upload-resume.component';
 import { CandidateMasterComponent } from './candidate-master.component';
 import { FilterComponent } from './filter-resume.component';
+import { SendNotifyComponent } from './send-message.component';
 
 const routes: Routes = [
   { path: '', component: CandidateMasterComponent },
@@ -15,7 +16,8 @@ const routes: Routes = [
   declarations: [
     CandidateMasterComponent,
     ResumeComponent,
-    FilterComponent
+    FilterComponent,
+    SendNotifyComponent
   ],
   imports: [
     CommonModule,

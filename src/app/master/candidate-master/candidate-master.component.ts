@@ -8,6 +8,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AppService, ToasterService } from 'src/app/_shared/_service';
 import * as XLSX from 'xlsx';
 import { FilterComponent } from './filter-resume.component';
+import { SendNotifyComponent } from './send-message.component';
 
 @Component({
   selector: 'app-candidate-master',
@@ -27,11 +28,14 @@ export class CandidateMasterComponent {
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
   matDialogRef!: MatDialogRef<ResumeComponent>;
+  matDialogNotification!: MatDialogRef<SendNotifyComponent>;
   filterPage!: MatDialogRef<FilterComponent>;
   match: any = [];
   layoutStyle: any = 'grid';
   candidateData: any = [];
   filterForm: any;
+  selectedCandidate: any = [];
+  isSelection: boolean = false;
   checkBox: any = [
     {checked: false, name: "angular"},
     {checked: false, name: "nodejs"},
@@ -58,6 +62,15 @@ export class CandidateMasterComponent {
       YOEinMonth: new FormControl(''),
       YOE: new FormControl('')
     });
+  }
+
+  getSelectedCandidate(data: any): void {
+    let match = (this.selectedCandidate.length > 0) ? this.selectedCandidate.filter((item: any) => item.id == data.id) : [];
+    if(match.length > 0) {
+      this.selectedCandidate = this.selectedCandidate.filter((item: any) => item.id != data.id)
+    } else {
+      this.selectedCandidate.push(data);
+    }
   }
 
   applyCandidateFilter(): void {
@@ -124,6 +137,15 @@ export class CandidateMasterComponent {
   openUploadModal() {
     this.matDialogRef = this.matDialog.open(ResumeComponent, { disableClose: true });
     this.matDialogRef.afterClosed().subscribe((res: any) => {
+      if(res) {
+        this.ngOnInit();
+      }
+    });
+  }
+
+  openNotificationModal() {
+    this.matDialogNotification = this.matDialog.open(SendNotifyComponent, { data: this.selectedCandidate, disableClose: true });
+    this.matDialogNotification.afterClosed().subscribe((res: any) => {
       if(res) {
         this.ngOnInit();
       }

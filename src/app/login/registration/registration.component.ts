@@ -12,6 +12,7 @@ export class RegistrationComponent  implements OnInit {
   form :FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
+    phone: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
     password2: new FormControl('', [Validators.required]),
     otp: new FormControl(''),
