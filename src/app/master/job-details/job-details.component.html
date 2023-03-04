@@ -1,0 +1,40 @@
+<section>
+    <div class="container-fluid">
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <ul class="model-menu">
+                    <li onclick="goBack()"><button class="btn text-white bg-dark" matTooltip="Previous Page" matTooltipPosition="below"><span class="material-symbols-outlined">arrow_back</span></button></li>
+                    <li (click)="refresh()"><button class="btn text-white btn-primary" matTooltip="Refresh Page Data" matTooltipPosition="below"><span class="material-symbols-outlined">refresh</span></button></li> |
+                    <li><a>Opportunity Master</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row px-2">
+            <div class="col-md-12 shadow card p-1">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="searchBar d-flex justify-content-center align-items-center">
+                            <span class="material-symbols-outlined">search</span>
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Search</mat-label>
+                                <input matInput (keyup)="applyFilter($event)" placeholder="Enter search text..." #input>
+                            </mat-form-field>
+                            <button mat-raised-button color="primary" style="margin-bottom: 24px;padding: 28px;" matTooltip="Search if data not in table." matTooltipPosition="above">Search</button>
+                            <button mat-raised-button style="margin-bottom: 24px;padding: 28px;" matTooltip="Clear filter." matTooltipPosition="above">Clear</button>
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex justify-content-center align-items-center">
+                        <mat-button-toggle-group name="layoutStyle" aria-label="layout Style" class="mb-3">
+                            <mat-button-toggle value="grid" (click)="changeLayout('grid')" matTooltip="Table format view" matTooltipPosition="above"><mat-icon>format_list_bulleted</mat-icon></mat-button-toggle>
+                            <mat-button-toggle value="table" (click)="changeLayout('table')" matTooltip="Grid format view" matTooltipPosition="above"><mat-icon>border_all</mat-icon></mat-button-toggle>
+                        </mat-button-toggle-group>
+                    </div>
+                    <div class="col-md-5 align-self-end text-end mb-4 pe-4">
+                        <button type="button" mat-raised-button class="me-2" color="primary" (click)="openUploadModal()" matTooltip="Create new Opportunity." matTooltipPosition="above"> <mat-icon>add</mat-icon> New Opportunity.</button>
+                        <button type="button" *ngIf="layoutStyle == 'table'" mat-raised-button class="me-2" style="background-color: green;color: white;" (click)="download()" matTooltip="Download selected records in Excel." matTooltipPosition="above"><span class="material-symbols-outlined">cloud_download</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
