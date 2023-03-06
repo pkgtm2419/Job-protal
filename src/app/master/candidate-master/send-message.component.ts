@@ -1,9 +1,6 @@
 import { Component, Inject, ViewChild } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { ToasterService, AppService } from "../../_shared/_service";
-import { FormGroup, FormControl } from "@angular/forms";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 
 @Component({

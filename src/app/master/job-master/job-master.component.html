@@ -30,7 +30,7 @@
                         </mat-button-toggle-group>
                     </div>
                     <div class="col-md-5 align-self-end text-end mb-4 pe-4">
-                        <button type="button" mat-raised-button class="me-2" color="primary" (click)="openUploadModal()" matTooltip="Create new Opportunity." matTooltipPosition="above"> <mat-icon>add</mat-icon> New Opportunity.</button>
+                        <button type="button" mat-raised-button class="me-2" [routerLink]="['/master/opportunity/create']" routerLinkActive="router-link-active" color="primary" matTooltip="Create new Opportunity." matTooltipPosition="above"> <mat-icon>add</mat-icon> New Opportunity.</button>
                         <button type="button" *ngIf="layoutStyle == 'table'" mat-raised-button class="me-2" style="background-color: green;color: white;" (click)="download()" matTooltip="Download selected records in Excel." matTooltipPosition="above"><span class="material-symbols-outlined">cloud_download</span></button>
                     </div>
                 </div>

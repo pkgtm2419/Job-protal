@@ -1,0 +1,7 @@
+h2 {
+    margin: 0 !important;
+}
+
+.mat-mdc-form-field-subscript-wrapper, .mat-mdc-form-field-bottom-align {
+    margin-top: -10px;
+}
