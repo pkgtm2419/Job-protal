@@ -10,7 +10,8 @@ import { AppService, ToasterService } from 'src/app/_shared/_service';
 })
 export class CreateJobComponent {
   opportunityForm: any;
-  editor!: Editor;
+  job_description_editor!: Editor;
+  required_skills_editor!: Editor;
   toolbar: Toolbar = [
     ['bold', 'italic'],
     ['underline', 'strike'],
@@ -25,7 +26,8 @@ export class CreateJobComponent {
   constructor(private service: AppService, private toaster: ToasterService) { }
 
   ngOnInit(): void {
-    this.editor = new Editor();
+    this.job_description_editor = new Editor();
+    this.required_skills_editor = new Editor();
     this.opportunityForm = new FormGroup({
       job_title: new FormControl('', [Validators.required]),
       employment_type: new FormControl('', [Validators.required]),
@@ -58,22 +60,22 @@ export class CreateJobComponent {
   }
 
   create(): void {
-    // if(!this.opportunityForm.valid) {
-    //   this.toaster.warning("Please fill complete form!");
-    //   return;
-    // }
+    if(!this.opportunityForm.valid) {
+      this.toaster.warning("Please fill complete form!");
+      return;
+    }
     let match: any = this.opportunityForm.value;
     console.log(match);
-    // this.service.createOpportunity(match).subscribe((res: any) => {
-    //   if(res.status) {
-    //     this.toaster.success(res.message);
-    //   } else {
-    //     this.toaster.warning(res.message);
-    //   }
-    // }),
-    // (error: any) => {
-    //   this.toaster.error("Some technical error "+error);
-    // }
+    this.service.createOpportunity(match).subscribe((res: any) => {
+      if(res.status) {
+        this.toaster.success(res.message);
+      } else {
+        this.toaster.warning(res.message);
+      }
+    }),
+    (error: any) => {
+      this.toaster.error("Some technical error "+error);
+    }
   }
 
 }

@@ -1,114 +1,168 @@
 <section>
   <div class="container-fluid">
-      <div class="row mt-2">
-          <div class="col-md-12">
-              <ul class="model-menu">
-                  <li onclick="goBack()"><button class="btn text-white bg-dark" matTooltip="Previous Page" matTooltipPosition="below"><span class="material-symbols-outlined">arrow_back</span></button></li>
-                  <li (click)="refresh()"><button class="btn text-white btn-primary" matTooltip="Refresh Page Data" matTooltipPosition="below"><span class="material-symbols-outlined">refresh</span></button></li> |
-                  <li><a>Opportunity Master</a></li>/
-                  <li><a>Create</a></li>
-              </ul>
-          </div>
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <ul class="model-menu">
+          <li onclick="goBack()"><button class="btn text-white bg-dark" matTooltip="Previous Page" matTooltipPosition="below"><span class="material-symbols-outlined">arrow_back</span></button></li>
+          <li (click)="refresh()"><button class="btn text-white btn-primary" matTooltip="Refresh Page Data" matTooltipPosition="below"><span class="material-symbols-outlined">refresh</span></button></li> |
+          <li><a>Opportunity Master</a></li>/
+          <li><a>Create</a></li>
+        </ul>
       </div>
-      <div class="row text-center bg-primary text-white">
-        <h2 class="p-2">Opportunity creation form</h2>
+    </div>
+    <div class="row text-center bg-primary text-white">
+      <h2 class="p-2">Opportunity creation form</h2>
+    </div>
+    <div class="row p-2">
+      <div class="card p-2">
+        <form (ngSubmit)="create()" [formGroup]="opportunityForm">
+          <ng-container>
+            <div class="row mb-2">
+              <h2>Job Information</h2>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Job Title</mat-label>
+                  <input matInput formControlName="job_title" type="text" placeholder="job_title">
+                  <mat-error *ngIf="formCtrl.job_title.touched && formCtrl.job_title.errors?.required">Job Title must be required!</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Employment Type</mat-label>
+                  <input matInput formControlName="employment_type" type="text" placeholder="employment_type">
+                  <mat-error *ngIf="formCtrl.employment_type.touched && formCtrl.employment_type.errors?.required">Employment Type must be required!</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Work Mode</mat-label>
+                  <input matInput formControlName="work_mood" type="text" placeholder="work_mood">
+                  <mat-error *ngIf="formCtrl.work_mood.touched && formCtrl.work_mood.errors?.required">Work Mode must be required!</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Allow Relocation</mat-label>
+                  <input matInput formControlName="allow_relocation" type="text" placeholder="allow_relocation">
+                  <mat-error *ngIf="formCtrl.allow_relocation.touched && formCtrl.allow_relocation.errors?.required">Allow Relocation must be required!</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row d-grid gap-2 px-3 mb-2">
+              <div class="form-control mb-2">
+                <label class="label">Job Description</label>
+                <ngx-editor-menu [editor]="job_description_editor" [toolbar]="toolbar"> </ngx-editor-menu>
+                <ngx-editor [editor]="job_description_editor" formControlName="job_description"> </ngx-editor>
+              </div>
+            </div>
+            <div class="row">
+              <h2>Experience Details</h2>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Min YOE</mat-label>
+                  <input matInput formControlName="min_yoe" type="text" placeholder="min_yoe">
+                  <mat-error *ngIf="formCtrl.min_yoe.touched && formCtrl.min_yoe.errors?.required">Min YOE must be required!</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Max YOE</mat-label>
+                  <input matInput formControlName="max_yoe" type="text" placeholder="max_yoe">
+                  <mat-error *ngIf="formCtrl.max_yoe.touched && formCtrl.max_yoe.errors?.required">Max YOE must be required!</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <h2>Salary Details</h2>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Salary (in Annum)</mat-label>
+                  <input matInput formControlName="salary_unit" type="text" placeholder="salary_unit">
+                  <mat-error *ngIf="formCtrl.salary_unit.touched && formCtrl.salary_unit.errors?.required">Salary Unit must be required!</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Minimum Salary (in Annum)</mat-label>
+                  <input matInput formControlName="min_salary" type="text" placeholder="min_salary">
+                  <mat-error *ngIf="formCtrl.min_salary.touched && formCtrl.min_salary.errors?.required">Minimum Salary must be required!</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Maximum Salary (in Annum)</mat-label>
+                  <input matInput formControlName="max_salary" type="text" placeholder="max_salary">
+                  <mat-error *ngIf="formCtrl.max_salary.touched && formCtrl.max_salary.errors?.required">Maximum Salary must be required!</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <div class="d-grid gap-2 px-1">
+                  <mat-checkbox formControlName="show_salary" color="primary"> Show Salary (To Candidate)</mat-checkbox>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <h2>Other Details</h2>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Company Name</mat-label>
+                  <input matInput formControlName="company_name" type="text" placeholder="company_name">
+                  <mat-error *ngIf="formCtrl.company_name.touched && formCtrl.company_name.errors?.required">Company Name must be required!</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Department</mat-label>
+                  <input matInput formControlName="department" type="text" placeholder="Department">
+                  <mat-error *ngIf="formCtrl.department.touched && formCtrl.department.errors?.required">Department must be required!</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Industry</mat-label>
+                  <input matInput formControlName="industry" type="text" placeholder="industry">
+                  <mat-error *ngIf="formCtrl.industry.touched && formCtrl.industry.errors?.required">Industry must be required!</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Preferred Industry</mat-label>
+                  <input matInput formControlName="preferred_industry" type="text" placeholder="Preferred industry">
+                  <mat-error *ngIf="formCtrl.preferred_industry.touched && formCtrl.preferred_industry.errors?.required">Preferred Industry must be required!</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <div class="d-grid gap-2 px-1">
+                  <mat-checkbox formControlName="show_recruiter_details" color="primary"> Show Recruiter Details (To Candidate)</mat-checkbox>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <h2>Details required from candidate</h2>
+              <div class="row d-grid gap-2 px-3 mb-2">
+                <div class="form-control mb-2">
+                  <label class="label">Required Skills</label>
+                  <ngx-editor-menu [editor]="required_skills_editor" [toolbar]="toolbar"> </ngx-editor-menu>
+                  <ngx-editor [editor]="required_skills_editor" formControlName="required_skills"> </ngx-editor>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Qualification</mat-label>
+                  <input matInput formControlName="qualification" type="text" placeholder="Qualification">
+                  <mat-error *ngIf="formCtrl.qualification.touched && formCtrl.qualification.errors?.required">Qualification must be required!</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <div class="d-grid gap-2 px-1">
+                  <mat-checkbox formControlName="available_location" color="primary"> Available Relocation (To Candidate)</mat-checkbox>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <button type="submit" mat-raised-button color="primary">Create Opportunity</button> 
+        </form>
       </div>
-      <div class="row p-2">
-        <div class="card p-2">
-            <form (ngSubmit)="create()" [formGroup]="opportunityForm">
-                <ng-container>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <mat-form-field appearance="outline"  class="d-grid gap-2 px-1">
-                          <mat-label>Job Title</mat-label>
-                          <input matInput formControlName="job_title" type="text" placeholder="job_title">
-                          <mat-error *ngIf="formCtrl.job_title.touched && formCtrl.job_title.errors?.required">Job Title must be required!</mat-error>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline"  class="d-grid gap-2 px-1">
-                          <mat-label>Employment Type</mat-label>
-                          <input matInput formControlName="employment_type" type="text" placeholder="employment_type">
-                          <mat-error *ngIf="formCtrl.employment_type.touched && formCtrl.employment_type.errors?.required">Employment Type must be required!</mat-error>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline"  class="d-grid gap-2 px-1">
-                          <mat-label>Work Mode</mat-label>
-                          <input matInput formControlName="work_mood" type="text" placeholder="work_mood">
-                          <mat-error *ngIf="formCtrl.work_mood.touched && formCtrl.work_mood.errors?.required">Work Mode must be required!</mat-error>
-                        </mat-form-field>
-                        <div class="form-control mb-2">
-                          <label class="label">Job Description</label>
-                          <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
-                          <ngx-editor [editor]="editor" formControlName="job_description"> </ngx-editor>
-                        </div>
-                        <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
-                          <mat-label>Min YOE</mat-label>
-                          <input matInput formControlName="min_yoe" type="text" placeholder="min_yoe">
-                          <mat-error *ngIf="formCtrl.min_yoe.touched && formCtrl.min_yoe.errors?.required">Min YOE must be required!</mat-error>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
-                          <mat-label>Max YOE</mat-label>
-                          <input matInput formControlName="max_yoe" type="text" placeholder="max_yoe">
-                          <mat-error *ngIf="formCtrl.max_yoe.touched && formCtrl.max_yoe.errors?.required">Max YOE must be required!</mat-error>
-                        </mat-form-field>
-                        <div class="form-group d-grid gap-2 px-1">
-                          <label class="label">Salary Unit</label>
-                          <input type="text" formControlName="salary_unit" class="form-control">
-                        </div>
-                        <div class="form-group d-grid gap-2 px-1">
-                          <label class="label">Min Salary</label>
-                          <input type="text" formControlName="min_salary" class="form-control">
-                        </div>
-                        <div class="form-group d-grid gap-2 px-1">
-                          <label class="label">Max Salary</label>
-                          <input type="text" formControlName="max_salary" class="form-control">
-                        </div>
-                        <div class="form-group d-grid gap-2 px-1">
-                          <label class="label">Show Salary</label>
-                          <input type="text" formControlName="show_salary" class="form-control">
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                      <div class="form-group d-grid gap-2 px-1">
-                          <label class="label">Allow Relocation</label>
-                          <input type="text" formControlName="allow_relocation" class="form-control">
-                        </div>
-                      <div class="form-group d-grid gap-2 px-1">
-                          <label class="label">Company Name</label>
-                          <input type="text" formControlName="company_name" class="form-control">
-                        </div>
-                      <div class="form-group d-grid gap-2 px-1">
-                          <label class="label">Show Recruiter Details</label>
-                          <input type="text" formControlName="show_recruiter_details" class="form-control">
-                        </div>
-                      <div class="form-group d-grid gap-2 px-1">
-                          <label class="label">Industry</label>
-                          <input type="text" formControlName="industry" class="form-control">
-                        </div>
-                      <div class="form-group d-grid gap-2 px-1">
-                          <label class="label">Department</label>
-                          <input type="text" formControlName="department" class="form-control">
-                        </div>
-                      <div class="form-group d-grid gap-2 px-1">
-                          <label class="label">Required Skills</label>
-                          <input type="text" formControlName="required_skills" class="form-control">
-                        </div>
-                      <div class="form-group d-grid gap-2 px-1">
-                          <label class="label">Available Relocation</label>
-                          <input type="text" formControlName="available_location" class="form-control">
-                        </div>
-                      <div class="form-group d-grid gap-2 px-1">
-                          <label class="label">Preferred Industry</label>
-                          <input type="text" formControlName="preferred_industry" class="form-control">
-                        </div>
-                      <div class="form-group d-grid gap-2 px-1">
-                          <label class="label">Qualification</label>
-                          <input type="text" formControlName="qualification" class="form-control">
-                        </div>
-                      </div>
-                    </div>
-                  </ng-container>
-                  <button type="submit" mat-raised-button color="primary">Create Opportunity</button>
-              </form>
-          </div>
-        </div>
-      </div>
+    </div>
+  </div>
 </section>
