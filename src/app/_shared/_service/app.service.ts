@@ -229,4 +229,34 @@ export class AppService {
     return this._http.post<any[]>(`${environment._url}/jp/post-job/`, data, httpOptions);
   }
 
+  getQualification(key: any): Observable<any[]> {
+    const httpOptions = { headers: new HttpHeaders({'Authorization': `Bearer ${this._cookie.get('a_token')}` })};
+    let url = (key) ? `${environment._url}/jp/qualification-search?search=${key}` : `${environment._url}/jp/qualification-search`;
+    return this._http.get<any[]>(url, httpOptions);
+  }
+
+  getDepartment(key: any): Observable<any[]> {
+    const httpOptions = { headers: new HttpHeaders({'Authorization': `Bearer ${this._cookie.get('a_token')}` })};
+    let url = (key) ? `${environment._url}/jp/department-search?search=${key}` : `${environment._url}/jp/department-search`;
+    return this._http.get<any[]>(url, httpOptions);
+  }
+
+  getSkills(key: any): Observable<any[]> {
+    const httpOptions = { headers: new HttpHeaders({'Authorization': `Bearer ${this._cookie.get('a_token')}` })};
+    let url = (key) ? `${environment._url}/jp/skill-search?search=${key}` : `${environment._url}/jp/skill-search`;
+    return this._http.get<any[]>(url, httpOptions);
+  }
+
+  getLocation(key: any): Observable<any[]> {
+    const httpOptions = { headers: new HttpHeaders({'Authorization': `Bearer ${this._cookie.get('a_token')}` })};
+    let url = (key) ? `${environment._url}/jp/location-search?search=${key}` : `${environment._url}/jp/location-search`;
+    return this._http.get<any[]>(url, httpOptions);
+  }
+
+  getIndustry(key: any): Observable<any[]> {
+    const httpOptions = { headers: new HttpHeaders({'Authorization': `Bearer ${this._cookie.get('a_token')}` })};
+    let url = (key) ? `${environment._url}/jp/industry-search?search=${key}` : `${environment._url}/jp/industry-search`;
+    return this._http.get<any[]>(url, httpOptions);
+  }
+
 }

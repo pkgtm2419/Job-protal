@@ -41,11 +41,9 @@
                 </mat-form-field>
               </div>
               <div class="col-md-6">
-                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
-                  <mat-label>Allow Relocation</mat-label>
-                  <input matInput formControlName="allow_relocation" type="text" placeholder="allow_relocation">
-                  <mat-error *ngIf="formCtrl.allow_relocation.touched && formCtrl.allow_relocation.errors?.required">Allow Relocation must be required!</mat-error>
-                </mat-form-field>
+                <div class="d-grid gap-2 px-1">
+                  <mat-checkbox formControlName="allow_relocation" color="primary"> Allow Relocation</mat-checkbox>
+                </div>
               </div>
             </div>
             <div class="row d-grid gap-2 px-3 mb-2">
@@ -112,16 +110,22 @@
               </div>
               <div class="col-md-6">
                 <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
-                  <mat-label>Department</mat-label>
-                  <input matInput formControlName="department" type="text" placeholder="Department">
+                  <mat-label>Select a Department</mat-label>
+                  <mat-select formControlName="department">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let dp of departmentList" value="dp.id">{{dp.department_name}}</mat-option>
+                  </mat-select>
                   <mat-error *ngIf="formCtrl.department.touched && formCtrl.department.errors?.required">Department must be required!</mat-error>
                 </mat-form-field>
               </div>
               <div class="col-md-6">
                 <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
-                  <mat-label>Industry</mat-label>
-                  <input matInput formControlName="industry" type="text" placeholder="industry">
-                  <mat-error *ngIf="formCtrl.industry.touched && formCtrl.industry.errors?.required">Industry must be required!</mat-error>
+                  <mat-label>Select an Industry</mat-label>
+                  <mat-select formControlName="industry">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let ind of industryList" value="ind.id">{{ind.industry_name}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="formCtrl.industry.touched && formCtrl.industry.errors?.required">industry must be required!</mat-error>
                 </mat-form-field>
               </div>
               <div class="col-md-6">
@@ -139,7 +143,7 @@
             </div>
             <div class="row mb-2">
               <h2>Details required from candidate</h2>
-              <div class="row d-grid gap-2 px-3 mb-2">
+              <div class="row d-grid gap-2 px-4 mb-2">
                 <div class="form-control mb-2">
                   <label class="label">Required Skills</label>
                   <ngx-editor-menu [editor]="required_skills_editor" [toolbar]="toolbar"> </ngx-editor-menu>
@@ -154,9 +158,11 @@
                 </mat-form-field>
               </div>
               <div class="col-md-6">
-                <div class="d-grid gap-2 px-1">
-                  <mat-checkbox formControlName="available_location" color="primary"> Available Relocation (To Candidate)</mat-checkbox>
-                </div>
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Available Location</mat-label>
+                  <input matInput formControlName="available_location" type="text" placeholder="Available Location">
+                  <mat-error *ngIf="formCtrl.available_location.touched && formCtrl.available_location.errors?.required">Available Location must be required!</mat-error>
+                </mat-form-field>
               </div>
             </div>
           </ng-container>

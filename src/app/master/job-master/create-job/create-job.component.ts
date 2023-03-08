@@ -22,10 +22,20 @@ export class CreateJobComponent {
     ['text_color', 'background_color'],
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
+  qualificationList: any = [];
+  departmentList: any = [];
+  skillsList: any = [];
+  locationList: any = [];
+  industryList: any = [];
 
   constructor(private service: AppService, private toaster: ToasterService) { }
 
   ngOnInit(): void {
+    this.getQualificationList();
+    this.getDepartmentList();
+    this.getSkillsList();
+    this.getLocationList();
+    this.getIndustryList();
     this.job_description_editor = new Editor();
     this.required_skills_editor = new Editor();
     this.opportunityForm = new FormGroup({
@@ -49,6 +59,76 @@ export class CreateJobComponent {
       preferred_industry: new FormControl('', [Validators.required]),
       qualification: new FormControl('', [Validators.required])
     });
+  }
+
+  getQualificationList(): void {
+    let match = '';
+    this.service.getQualification(match).subscribe((res: any) => {
+      if(res.status) {
+        this.qualificationList = res.data;
+      } else {
+        this.toaster.warning(res.message);
+      }
+    }),
+    (error: any) => {
+      this.toaster.error("Some technical error "+error);
+    }
+  }
+
+  getDepartmentList(): void {
+    let match = '';
+    this.service.getDepartment(match).subscribe((res: any) => {
+      if(res.status) {
+        this.departmentList = res.data;
+      } else {
+        this.toaster.warning(res.message);
+      }
+    }),
+    (error: any) => {
+      this.toaster.error("Some technical error "+error);
+    }
+  }
+
+  getSkillsList(): void {
+    let match = '';
+    this.service.getSkills(match).subscribe((res: any) => {
+      if(res.status) {
+        this.skillsList = res.data;
+      } else {
+        this.toaster.warning(res.message);
+      }
+    }),
+    (error: any) => {
+      this.toaster.error("Some technical error "+error);
+    }
+  }
+
+  getLocationList(): void {
+    let match = '';
+    this.service.getLocation(match).subscribe((res: any) => {
+      if(res.status) {
+        this.locationList = res.data;
+      } else {
+        this.toaster.warning(res.message);
+      }
+    }),
+    (error: any) => {
+      this.toaster.error("Some technical error "+error);
+    }
+  }
+
+  getIndustryList(): void {
+    let match = '';
+    this.service.getIndustry(match).subscribe((res: any) => {
+      if(res.status) {
+        this.industryList = res.data;
+      } else {
+        this.toaster.warning(res.message);
+      }
+    }),
+    (error: any) => {
+      this.toaster.error("Some technical error "+error);
+    }
   }
 
   get formCtrl() {
