@@ -36,8 +36,8 @@
               <div class="col-md-6">
                 <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
                   <mat-label>Work Mode</mat-label>
-                  <input matInput formControlName="work_mood" type="text" placeholder="work_mood">
-                  <mat-error *ngIf="formCtrl.work_mood.touched && formCtrl.work_mood.errors?.required">Work Mode must be required!</mat-error>
+                  <input matInput formControlName="work_mode" type="text" placeholder="work_mode">
+                  <mat-error *ngIf="formCtrl.work_mode.touched && formCtrl.work_mode.errors?.required">Work Mode must be required!</mat-error>
                 </mat-form-field>
               </div>
               <div class="col-md-6">
@@ -74,22 +74,26 @@
               <h2>Salary Details</h2>
               <div class="col-md-6">
                 <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
-                  <mat-label>Salary (in Annum)</mat-label>
-                  <input matInput formControlName="salary_unit" type="text" placeholder="salary_unit">
+                  <mat-label>Select Salary Unit</mat-label>
+                  <mat-select formControlName="salary_unit">
+                    <mat-option>None</mat-option>
+                    <mat-option value="INR">Indian (INR)</mat-option>
+                    <mat-option value="USD">Dollar (USD)</mat-option>
+                  </mat-select>
                   <mat-error *ngIf="formCtrl.salary_unit.touched && formCtrl.salary_unit.errors?.required">Salary Unit must be required!</mat-error>
                 </mat-form-field>
               </div>
               <div class="col-md-6">
                 <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
                   <mat-label>Minimum Salary (in Annum)</mat-label>
-                  <input matInput formControlName="min_salary" type="text" placeholder="min_salary">
+                  <input matInput formControlName="min_salary" type="number" placeholder="min_salary">
                   <mat-error *ngIf="formCtrl.min_salary.touched && formCtrl.min_salary.errors?.required">Minimum Salary must be required!</mat-error>
                 </mat-form-field>
               </div>
               <div class="col-md-6">
                 <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
                   <mat-label>Maximum Salary (in Annum)</mat-label>
-                  <input matInput formControlName="max_salary" type="text" placeholder="max_salary">
+                  <input matInput formControlName="max_salary" type="number" placeholder="max_salary">
                   <mat-error *ngIf="formCtrl.max_salary.touched && formCtrl.max_salary.errors?.required">Maximum Salary must be required!</mat-error>
                 </mat-form-field>
               </div>

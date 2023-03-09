@@ -53,7 +53,7 @@ export class CreateJobComponent {
     this.opportunityForm = new FormGroup({
       job_title: new FormControl('', [Validators.required]),
       employment_type: new FormControl('', [Validators.required]),
-      work_mood: new FormControl('', [Validators.required]),
+      work_mode: new FormControl('', [Validators.required]),
       job_description: new FormControl('', [Validators.required]),
       min_yoe: new FormControl('', [Validators.required]),
       max_yoe: new FormControl('', [Validators.required]),
