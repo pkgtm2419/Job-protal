@@ -1,7 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from "@angular/forms";
 import { Editor, Toolbar } from 'ngx-editor';
 import { AppService, ToasterService } from 'src/app/_shared/_service';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {MatChipInputEvent} from '@angular/material/chips';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-job',
@@ -22,13 +27,21 @@ export class CreateJobComponent {
     ['text_color', 'background_color'],
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  fruitCtrl = new FormControl('');
+  filteredFruits!: Observable<any>;
+  @ViewChild('fruitInput')
+  fruitInput!: ElementRef<HTMLInputElement>;
+  fruits: any = [{id: 1001, city_name: "pune"}];
+  // allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+  allFruits: any = [];
   qualificationList: any = [];
   departmentList: any = [];
   skillsList: any = [];
   locationList: any = [];
   industryList: any = [];
 
-  constructor(private service: AppService, private toaster: ToasterService) { }
+  constructor(private service: AppService, private toaster: ToasterService) {}
 
   ngOnInit(): void {
     this.getQualificationList();
@@ -59,6 +72,33 @@ export class CreateJobComponent {
       preferred_industry: new FormControl('', [Validators.required]),
       qualification: new FormControl('', [Validators.required])
     });
+  }
+
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      let idList = this.allFruits.map((item: any) => item.id);
+      let max = Math.max(...idList);
+      this.fruits.push({id: max+1, city_name: value});
+    }
+    event.chipInput!.clear();
+    this.fruitCtrl.setValue(null);
+  }
+
+  remove(fruit: number): void {
+    if(fruit){
+      this.fruits = this.fruits.filter((item:any) => item.id !== fruit);
+    }
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.fruits.push(event.option.value);
+    this.fruitInput.nativeElement.value = '';
+    this.fruitCtrl.setValue(null);
+  }
+
+  private _filter(value: string): any {
+    return this.allFruits.filter((item: any) => (item.city_name.toLowerCase().indexOf(value.toLowerCase()) > -1));
   }
 
   getQualificationList(): void {
@@ -107,7 +147,10 @@ export class CreateJobComponent {
     let match = '';
     this.service.getLocation(match).subscribe((res: any) => {
       if(res.status) {
-        this.locationList = res.data;
+        this.allFruits = res.data;
+        this.filteredFruits = this.fruitCtrl.valueChanges.pipe( startWith(null),
+          map((fruit: any | null) => (fruit ? this._filter(fruit) : this.allFruits.slice())),
+        );
       } else {
         this.toaster.warning(res.message);
       }

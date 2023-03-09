@@ -164,6 +164,20 @@
                   <mat-error *ngIf="formCtrl.available_location.touched && formCtrl.available_location.errors?.required">Available Location must be required!</mat-error>
                 </mat-form-field>
               </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Available Location</mat-label>
+                  <mat-chip-grid #chipGrid aria-label="Fruit selection">
+                    <mat-chip-row *ngFor="let fruit of fruits" (removed)="remove(fruit.id)"> {{fruit.city_name}}
+                      <button matChipRemove [attr.aria-label]="'remove ' + fruit.id"> <mat-icon>cancel</mat-icon> </button>
+                    </mat-chip-row>
+                  </mat-chip-grid>
+                  <input placeholder="New Fruit..." #fruitInput [formControl]="fruitCtrl" [matChipInputFor]="chipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"/>
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                    <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit"> {{fruit.city_name}} </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
             </div>
           </ng-container>
           <button type="submit" mat-raised-button color="primary">Create Opportunity</button> 
