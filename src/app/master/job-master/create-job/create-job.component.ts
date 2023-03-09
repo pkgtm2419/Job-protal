@@ -28,12 +28,11 @@ export class CreateJobComponent {
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  fruitCtrl = new FormControl('');
-  filteredFruits!: Observable<any>;
+  fruitCtrl = new FormControl('', [Validators.required]);
+  filteredLocationList!: Observable<any>;
   @ViewChild('fruitInput')
   fruitInput!: ElementRef<HTMLInputElement>;
-  fruits: any = [{id: 1001, city_name: "pune"}];
-  // allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+  fruits: any = [];
   allFruits: any = [];
   qualificationList: any = [];
   departmentList: any = [];
@@ -148,7 +147,7 @@ export class CreateJobComponent {
     this.service.getLocation(match).subscribe((res: any) => {
       if(res.status) {
         this.allFruits = res.data;
-        this.filteredFruits = this.fruitCtrl.valueChanges.pipe( startWith(null),
+        this.filteredLocationList = this.fruitCtrl.valueChanges.pipe( startWith(null),
           map((fruit: any | null) => (fruit ? this._filter(fruit) : this.allFruits.slice())),
         );
       } else {
@@ -183,22 +182,22 @@ export class CreateJobComponent {
   }
 
   create(): void {
-    if(!this.opportunityForm.valid) {
-      this.toaster.warning("Please fill complete form!");
-      return;
-    }
+    // if(!this.opportunityForm.valid) {
+    //   this.toaster.warning("Please fill complete form!");
+    //   return;
+    // }
     let match: any = this.opportunityForm.value;
     console.log(match);
-    this.service.createOpportunity(match).subscribe((res: any) => {
-      if(res.status) {
-        this.toaster.success(res.message);
-      } else {
-        this.toaster.warning(res.message);
-      }
-    }),
-    (error: any) => {
-      this.toaster.error("Some technical error "+error);
-    }
+    // this.service.createOpportunity(match).subscribe((res: any) => {
+    //   if(res.status) {
+    //     this.toaster.success(res.message);
+    //   } else {
+    //     this.toaster.warning(res.message);
+    //   }
+    // }),
+    // (error: any) => {
+    //   this.toaster.error("Some technical error "+error);
+    // }
   }
 
 }
