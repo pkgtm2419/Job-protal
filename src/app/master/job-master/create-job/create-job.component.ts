@@ -28,12 +28,11 @@ export class CreateJobComponent {
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  fruitCtrl = new FormControl('', [Validators.required]);
+  location = new FormControl('', [Validators.required]);
   filteredLocationList!: Observable<any>;
-  @ViewChild('fruitInput')
-  fruitInput!: ElementRef<HTMLInputElement>;
-  fruits: any = [];
-  allFruits: any = [];
+  @ViewChild('locationInput')
+  locationInput!: ElementRef<HTMLInputElement>;
+  locations: any = [];
   qualificationList: any = [];
   departmentList: any = [];
   skillsList: any = [];
@@ -76,28 +75,28 @@ export class CreateJobComponent {
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
-      let idList = this.allFruits.map((item: any) => item.id);
+      let idList = this.locationList.map((item: any) => item.id);
       let max = Math.max(...idList);
-      this.fruits.push({id: max+1, city_name: value});
+      this.locations.push({id: max+1, city_name: value});
     }
     event.chipInput!.clear();
-    this.fruitCtrl.setValue(null);
+    this.location.setValue(null);
   }
 
-  remove(fruit: number): void {
-    if(fruit){
-      this.fruits = this.fruits.filter((item:any) => item.id !== fruit);
+  remove(id: number): void {
+    if(id){
+      this.locations = this.locations.filter((item:any) => item.id !== id);
     }
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.fruits.push(event.option.value);
-    this.fruitInput.nativeElement.value = '';
-    this.fruitCtrl.setValue(null);
+    this.locations.push(event.option.value);
+    this.locationInput.nativeElement.value = '';
+    this.location.setValue(null);
   }
 
   private _filter(value: string): any {
-    return this.allFruits.filter((item: any) => (item.city_name.toLowerCase().indexOf(value.toLowerCase()) > -1));
+    return this.locationList.filter((item: any) => (item.city_name.toLowerCase().indexOf(value.toLowerCase()) > -1));
   }
 
   getQualificationList(): void {
@@ -146,9 +145,9 @@ export class CreateJobComponent {
     let match = '';
     this.service.getLocation(match).subscribe((res: any) => {
       if(res.status) {
-        this.allFruits = res.data;
-        this.filteredLocationList = this.fruitCtrl.valueChanges.pipe( startWith(null),
-          map((fruit: any | null) => (fruit ? this._filter(fruit) : this.allFruits.slice())),
+        this.locationList = res.data;
+        this.filteredLocationList = this.location.valueChanges.pipe( startWith(null),
+          map((item: any | null) => (item ? this._filter(item) : this.locationList.slice())),
         );
       } else {
         this.toaster.warning(res.message);

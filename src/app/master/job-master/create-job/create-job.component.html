@@ -58,14 +58,14 @@
               <div class="col-md-6">
                 <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
                   <mat-label>Min YOE</mat-label>
-                  <input matInput formControlName="min_yoe" type="text" placeholder="min_yoe">
+                  <input matInput formControlName="min_yoe" type="number" min="0" placeholder="min_yoe">
                   <mat-error *ngIf="formCtrl.min_yoe.touched && formCtrl.min_yoe.errors?.required">Min YOE must be required!</mat-error>
                 </mat-form-field>
               </div>
               <div class="col-md-6">
                 <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
                   <mat-label>Max YOE</mat-label>
-                  <input matInput formControlName="max_yoe" type="text" placeholder="max_yoe">
+                  <input matInput formControlName="max_yoe" type="number" min="0" placeholder="max_yoe">
                   <mat-error *ngIf="formCtrl.max_yoe.touched && formCtrl.max_yoe.errors?.required">Max YOE must be required!</mat-error>
                 </mat-form-field>
               </div>
@@ -117,7 +117,7 @@
                   <mat-label>Select a Department</mat-label>
                   <mat-select formControlName="department">
                     <mat-option>None</mat-option>
-                    <mat-option *ngFor="let dp of departmentList" value="dp.id">{{dp.department_name}}</mat-option>
+                    <mat-option *ngFor="let dp of departmentList" [value]="dp.id">{{dp.department_name}}</mat-option>
                   </mat-select>
                   <mat-error *ngIf="formCtrl.department.touched && formCtrl.department.errors?.required">Department must be required!</mat-error>
                 </mat-form-field>
@@ -127,7 +127,7 @@
                   <mat-label>Select an Industry</mat-label>
                   <mat-select formControlName="industry">
                     <mat-option>None</mat-option>
-                    <mat-option *ngFor="let ind of industryList" value="ind.id">{{ind.industry_name}}</mat-option>
+                    <mat-option *ngFor="let ind of industryList" [value]="ind.id">{{ind.industry_name}}</mat-option>
                   </mat-select>
                   <mat-error *ngIf="formCtrl.industry.touched && formCtrl.industry.errors?.required">industry must be required!</mat-error>
                 </mat-form-field>
@@ -165,11 +165,11 @@
                 <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
                   <mat-label>Available Location</mat-label>
                   <mat-chip-grid #chipGrid aria-label="Location selection" formControlName="available_location">
-                    <mat-chip-row *ngFor="let item of fruits" (removed)="remove(item.id)" [value]="item.id"> {{item.city_name}}
+                    <mat-chip-row *ngFor="let item of locations" (removed)="remove(item.id)" [value]="item.id"> {{item.city_name}}
                       <button matChipRemove [attr.aria-label]="'remove ' + item.id"> <mat-icon>cancel</mat-icon> </button>
                     </mat-chip-row>
                   </mat-chip-grid>
-                  <input placeholder="Enter (New) Location..." #fruitInput [formControl]="fruitCtrl" [matChipInputFor]="chipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"/>
+                  <input placeholder="Enter (New) Location..." #locationInput [formControl]="location" [matChipInputFor]="chipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"/>
                   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                     <mat-option *ngFor="let item of filteredLocationList | async" [value]="item"> {{item.city_name}} </mat-option>
                   </mat-autocomplete>

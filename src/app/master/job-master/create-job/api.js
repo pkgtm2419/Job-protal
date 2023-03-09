@@ -17,7 +17,7 @@ payload={
     "allow_relocation": true,
     "company_name": "demo company name",
     "show_recruiter_details": true,
-    "industry": 3, // "/api/jp/qualification-search?search=query"
+    "industry": 3, // "/api/jp/industry-search?search=query"
     "department": 1, // "/api/jp/department-search?search=query"
     "required_skills": [ // "/api/jp/skill-search?search=query" 
         1,
@@ -27,7 +27,7 @@ payload={
         1,
         3
     ],
-    "preferred_industry": [ // "/api/jp/industry-search?search=query"
+    "preferred_industry": [// "/api/jp/industry-search?search=query"
         1,
         3
     ],
@@ -65,8 +65,33 @@ valid_payload={
         3
     ],
     "qualification": [
-        1
+        1,
+        2
     ]
 }
 
 //get
+
+// {
+//     "employment_type": [
+//       "\"full type\" is not a valid choice."// done
+//     ],
+//     "work_mood": [
+//       "This field is required."
+//     ],
+//     "industry": [
+//       "Incorrect type. Expected pk value, received str."
+//     ],
+//     "department": [
+//       "Incorrect type. Expected pk value, received str."
+//     ],
+//     "required_skills": [
+//       "Expected a list of items but got type \"str\"."
+//     ],
+//     "preferred_industry": [
+//       "Expected a list of items but got type \"str\"."
+//     ],
+//     "qualification": [
+//       "Expected a list of items but got type \"str\"."
+//     ]
+//   }
