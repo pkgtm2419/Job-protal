@@ -28,12 +28,11 @@ export class CreateJobComponent {
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  location = new FormControl('', [Validators.required]);
-  filteredLocationList!: Observable<any>;
-  @ViewChild('locationInput')
-  locationInput!: ElementRef<HTMLInputElement>;
+  filteredLocationList: any;
   locations: any = [];
+  qualifications: any = [];
   qualificationList: any = [];
+  filteredQualificationList: any;
   departmentList: any = [];
   skillsList: any = [];
   locationList: any = [];
@@ -72,7 +71,15 @@ export class CreateJobComponent {
     });
   }
 
-  add(event: MatChipInputEvent): void {
+  filterLocation(loc: any) {
+    this.filteredLocationList = this.locationList.filter((item: any) => (item.city_name.toLowerCase().indexOf(loc.value.toLowerCase()) > -1));
+  }
+
+  filterQualification(loc: any) {
+    this.filteredQualificationList = this.qualificationList.filter((item: any) => (item.qualification_name.toLowerCase().indexOf(loc.value.toLowerCase()) > -1));
+  }
+
+  addLocation(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
       let idList = this.locationList.map((item: any) => item.id);
@@ -80,23 +87,28 @@ export class CreateJobComponent {
       this.locations.push({id: max+1, city_name: value});
     }
     event.chipInput!.clear();
-    this.location.setValue(null);
+  }
+
+  addQualification(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      let idList = this.qualificationList.map((item: any) => item.id);
+      let max = Math.max(...idList);
+      this.locations.push({id: max+1, qualification_name: value});
+    }
+    event.chipInput!.clear();
   }
 
   remove(id: number): void {
-    if(id){
-      this.locations = this.locations.filter((item:any) => item.id !== id);
-    }
+    this.locations = this.locations.filter((item:any) => item.id !== id);
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
+  selectedLocation(event: MatAutocompleteSelectedEvent): void {
     this.locations.push(event.option.value);
-    this.locationInput.nativeElement.value = '';
-    this.location.setValue(null);
   }
 
-  private _filter(value: string): any {
-    return this.locationList.filter((item: any) => (item.city_name.toLowerCase().indexOf(value.toLowerCase()) > -1));
+  selectedQualification(event: MatAutocompleteSelectedEvent): void {
+    this.qualifications.push(event.option.value);
   }
 
   getQualificationList(): void {
@@ -104,6 +116,7 @@ export class CreateJobComponent {
     this.service.getQualification(match).subscribe((res: any) => {
       if(res.status) {
         this.qualificationList = res.data;
+        this.filteredQualificationList = res.data;
       } else {
         this.toaster.warning(res.message);
       }
@@ -146,9 +159,7 @@ export class CreateJobComponent {
     this.service.getLocation(match).subscribe((res: any) => {
       if(res.status) {
         this.locationList = res.data;
-        this.filteredLocationList = this.location.valueChanges.pipe( startWith(null),
-          map((item: any | null) => (item ? this._filter(item) : this.locationList.slice())),
-        );
+        this.filteredLocationList = res.data;
       } else {
         this.toaster.warning(res.message);
       }
