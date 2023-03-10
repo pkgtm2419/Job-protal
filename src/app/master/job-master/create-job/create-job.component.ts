@@ -28,15 +28,19 @@ export class CreateJobComponent {
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  filteredLocationList: any;
   locations: any = [];
+  locationList: any = [];
+  filteredLocationList: any;
   qualifications: any = [];
   qualificationList: any = [];
   filteredQualificationList: any;
-  departmentList: any = [];
+  skills: any = [];
   skillsList: any = [];
-  locationList: any = [];
+  filteredSkillsList: any;
+  industries: any = [];
   industryList: any = [];
+  filteredIndustryList: any;
+  departmentList: any = [];
 
   constructor(private service: AppService, private toaster: ToasterService) {}
 
@@ -79,6 +83,14 @@ export class CreateJobComponent {
     this.filteredQualificationList = this.qualificationList.filter((item: any) => (item.qualification_name.toLowerCase().indexOf(loc.value.toLowerCase()) > -1));
   }
 
+  filterSkills(loc: any) {
+    this.filteredSkillsList = this.skillsList.filter((item: any) => (item.skill_name.toLowerCase().indexOf(loc.value.toLowerCase()) > -1));
+  }
+
+  filterIndustry(loc: any) {
+    this.filteredIndustryList = this.industryList.filter((item: any) => (item.industry_name.toLowerCase().indexOf(loc.value.toLowerCase()) > -1));
+  }
+
   addLocation(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
@@ -94,13 +106,45 @@ export class CreateJobComponent {
     if (value) {
       let idList = this.qualificationList.map((item: any) => item.id);
       let max = Math.max(...idList);
-      this.locations.push({id: max+1, qualification_name: value});
+      this.qualifications.push({id: max+1, qualification_name: value});
     }
     event.chipInput!.clear();
   }
 
-  remove(id: number): void {
+  addSkills(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      let idList = this.skillsList.map((item: any) => item.id);
+      let max = Math.max(...idList);
+      this.skills.push({id: max+1, skill_name: value});
+    }
+    event.chipInput!.clear();
+  }
+
+  addIndustries(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      let idList = this.industryList.map((item: any) => item.id);
+      let max = Math.max(...idList);
+      this.industries.push({id: max+1, industry_name: value});
+    }
+    event.chipInput!.clear();
+  }
+
+  removeLocation(id: number): void {
     this.locations = this.locations.filter((item:any) => item.id !== id);
+  }
+
+  removeQualifications(id: number): void {
+    this.qualifications = this.qualifications.filter((item:any) => item.id !== id);
+  }
+
+  removeSkills(id: number): void {
+    this.skills = this.skills.filter((item:any) => item.id !== id);
+  }
+
+  removePreferredIndustry(id: number): void {
+    this.industries = this.industries.filter((item:any) => item.id !== id);
   }
 
   selectedLocation(event: MatAutocompleteSelectedEvent): void {
@@ -109,6 +153,14 @@ export class CreateJobComponent {
 
   selectedQualification(event: MatAutocompleteSelectedEvent): void {
     this.qualifications.push(event.option.value);
+  }
+
+  selectedSkills(event: MatAutocompleteSelectedEvent): void {
+    this.skills.push(event.option.value);
+  }
+
+  selectedIndustry(event: MatAutocompleteSelectedEvent): void {
+    this.industries.push(event.option.value);
   }
 
   getQualificationList(): void {
@@ -145,6 +197,7 @@ export class CreateJobComponent {
     this.service.getSkills(match).subscribe((res: any) => {
       if(res.status) {
         this.skillsList = res.data;
+        this.filteredSkillsList = res.data;
       } else {
         this.toaster.warning(res.message);
       }
@@ -174,6 +227,7 @@ export class CreateJobComponent {
     this.service.getIndustry(match).subscribe((res: any) => {
       if(res.status) {
         this.industryList = res.data;
+        this.filteredIndustryList = res.data;
       } else {
         this.toaster.warning(res.message);
       }
@@ -192,22 +246,22 @@ export class CreateJobComponent {
   }
 
   create(): void {
-    // if(!this.opportunityForm.valid) {
-    //   this.toaster.warning("Please fill complete form!");
-    //   return;
-    // }
+    if(!this.opportunityForm.valid) {
+      this.toaster.warning("Please fill complete form!");
+      return;
+    }
     let match: any = this.opportunityForm.value;
     console.log(match);
-    // this.service.createOpportunity(match).subscribe((res: any) => {
-    //   if(res.status) {
-    //     this.toaster.success(res.message);
-    //   } else {
-    //     this.toaster.warning(res.message);
-    //   }
-    // }),
-    // (error: any) => {
-    //   this.toaster.error("Some technical error "+error);
-    // }
+    this.service.createOpportunity(match).subscribe((res: any) => {
+      if(res.status) {
+        this.toaster.success(res.message);
+      } else {
+        this.toaster.warning(res.message);
+      }
+    }),
+    (error: any) => {
+      this.toaster.error("Some technical error "+error);
+    }
   }
 
 }

@@ -29,14 +29,27 @@
               <div class="col-md-6">
                 <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
                   <mat-label>Employment Type</mat-label>
-                  <input matInput formControlName="employment_type" type="text" placeholder="employment_type">
+                  <mat-select formControlName="employment_type">
+                    <mat-option>None</mat-option>
+                    <mat-option value="ft-p">Full time permanent</mat-option>
+                    <mat-option value="ft-t">Full time temporary</mat-option>
+                    <mat-option value="ft-fe">Full time freelancer</mat-option>
+                    <mat-option value="pt-p">Part time permanent</mat-option>
+                    <mat-option value="pt-t">Part time temporary</mat-option>
+                    <mat-option value="pt-fe">Part time freelancer</mat-option>
+                  </mat-select>
                   <mat-error *ngIf="formCtrl.employment_type.touched && formCtrl.employment_type.errors?.required">Employment Type must be required!</mat-error>
                 </mat-form-field>
               </div>
               <div class="col-md-6">
                 <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
                   <mat-label>Work Mode</mat-label>
-                  <input matInput formControlName="work_mode" type="text" placeholder="work_mode">
+                  <mat-select formControlName="work_mode">
+                    <mat-option>None</mat-option>
+                    <mat-option value="in_office">In Office</mat-option>
+                    <mat-option value="remote">Remote</mat-option>
+                    <mat-option value="hybrid">Hybrid</mat-option>
+                  </mat-select>
                   <mat-error *ngIf="formCtrl.work_mode.touched && formCtrl.work_mode.errors?.required">Work Mode must be required!</mat-error>
                 </mat-form-field>
               </div>
@@ -135,7 +148,15 @@
               <div class="col-md-6">
                 <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
                   <mat-label>Preferred Industry</mat-label>
-                  <input matInput formControlName="preferred_industry" type="text" placeholder="Preferred industry">
+                  <mat-chip-grid #chipGrid3 aria-label="Preferred Industry selection" formControlName="preferred_industry">
+                    <mat-chip-row *ngFor="let item of industries" (removed)="removePreferredIndustry(item.id)" [value]="item.id"> {{item.industry_name}}
+                      <button matChipRemove [attr.aria-label]="'remove ' + item.id"> <mat-icon>cancel</mat-icon> </button>
+                    </mat-chip-row>
+                  </mat-chip-grid>
+                  <input placeholder="Enter Preferred Industry..." (keyup)="filterIndustry($event.target)" [matChipInputFor]="chipGrid3" [matAutocomplete]="auto3" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="addIndustries($event)"/>
+                  <mat-autocomplete #auto3="matAutocomplete" (optionSelected)="selectedIndustry($event)">
+                    <mat-option *ngFor="let item of filteredIndustryList" [value]="item"> {{item.industry_name}} </mat-option>
+                  </mat-autocomplete>
                   <mat-error *ngIf="formCtrl.preferred_industry.touched && formCtrl.preferred_industry.errors?.required">Preferred Industry must be required!</mat-error>
                 </mat-form-field>
               </div>
@@ -147,18 +168,26 @@
             </div>
             <div class="row mb-2">
               <h2>Details required from candidate</h2>
-              <div class="row d-grid gap-2 px-4 mb-2">
-                <div class="form-control mb-2">
-                  <label class="label">Required Skills</label>
-                  <ngx-editor-menu [editor]="required_skills_editor" [toolbar]="toolbar"> </ngx-editor-menu>
-                  <ngx-editor [editor]="required_skills_editor" formControlName="required_skills"> </ngx-editor>
-                </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
+                  <mat-label>Required Skills</mat-label>
+                  <mat-chip-grid #chipGrid2 aria-label="Skills selection" formControlName="required_skills">
+                    <mat-chip-row *ngFor="let item of skills" (removed)="removeSkills(item.id)" [value]="item.id"> {{item.skill_name}}
+                      <button matChipRemove [attr.aria-label]="'remove ' + item.id"> <mat-icon>cancel</mat-icon> </button>
+                    </mat-chip-row>
+                  </mat-chip-grid>
+                  <input placeholder="Enter Skills..." (keyup)="filterSkills($event.target)" [matChipInputFor]="chipGrid2" [matAutocomplete]="auto2" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="addSkills($event)"/>
+                  <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="selectedSkills($event)">
+                    <mat-option *ngFor="let item of filteredSkillsList" [value]="item"> {{item.skill_name}} </mat-option>
+                  </mat-autocomplete>
+                  <mat-error *ngIf="formCtrl.required_skills.touched && formCtrl.required_skills.errors?.required">Skills must be required!</mat-error>
+                </mat-form-field>
               </div>
               <div class="col-md-6">
                 <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
                   <mat-label>Qualification</mat-label>
                   <mat-chip-grid #chipGrid1 aria-label="qualification selection" formControlName="qualification">
-                    <mat-chip-row *ngFor="let item of qualifications" (removed)="remove(item.id)" [value]="item.id"> {{item.qualification_name}}
+                    <mat-chip-row *ngFor="let item of qualifications" (removed)="removeQualifications(item.id)" [value]="item.id"> {{item.qualification_name}}
                       <button matChipRemove [attr.aria-label]="'remove ' + item.id"> <mat-icon>cancel</mat-icon> </button>
                     </mat-chip-row>
                   </mat-chip-grid>
@@ -173,7 +202,7 @@
                 <mat-form-field appearance="outline" class="d-grid gap-2 px-1">
                   <mat-label>Available Location</mat-label>
                   <mat-chip-grid #chipGrid aria-label="Location selection" formControlName="available_location">
-                    <mat-chip-row *ngFor="let item of locations" (removed)="remove(item.id)" [value]="item.id"> {{item.city_name}}
+                    <mat-chip-row *ngFor="let item of locations" (removed)="removeLocation(item.id)" [value]="item.id"> {{item.city_name}}
                       <button matChipRemove [attr.aria-label]="'remove ' + item.id"> <mat-icon>cancel</mat-icon> </button>
                     </mat-chip-row>
                   </mat-chip-grid>
@@ -186,7 +215,13 @@
               </div>
             </div>
           </ng-container>
-          <button type="submit" mat-raised-button color="primary">Create Opportunity</button> 
+          <div class="row">
+          <div class="col-4"></div>
+          <div class="col-4 text-center">
+            <button type="submit" mat-raised-button color="primary">Publish Job</button>
+          </div>
+          <div class="col-4"></div>
+          </div>
         </form>
       </div>
     </div>
