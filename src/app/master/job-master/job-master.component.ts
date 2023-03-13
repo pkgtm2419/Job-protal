@@ -20,17 +20,19 @@ export class JobMasterComponent {
   sort!: MatSort;
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
-  layoutStyle: string = 'grid';
   jobPostList: any;
   selectedJobData: any;
+  jobId: any;
+  candidateData: any;
 
   constructor(private toaster: ToasterService, private service: AppService) { }
 
   ngOnInit(): void {
-    this.getData();
+    this.getPostedJobData();
   }
 
   selectJob(data: any) {
+    this.getCandidateData(data.id);
     this.jobPostList = this.jobPostList.map((item: any) => {
       item.selectedJob = false;
       return item;
@@ -39,17 +41,11 @@ export class JobMasterComponent {
     this.selectedJobData = [data];
   }
 
-  getData() {
-    this.service.getOpportunity().subscribe((res: any) => {
+  getPostedJobData() {
+    let match = 0;
+    this.service.getOpportunity(match).subscribe((res: any) => {
       if(res.status) {
         this.jobPostList = res.data;
-        this.dataSource = new MatTableDataSource(this.jobPostList);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.displayedColumns = Object.keys(this.jobPostList[0]);
-        this.limits.push(this.jobPostList.length);
-        this.limits = [...new Set(this.limits)];
-        this.limits = this.limits.sort((a: number, b: number) => {return a-b});
         this.toaster.success(res.message);
       } else {
         this.toaster.warning(res.message);
@@ -60,10 +56,17 @@ export class JobMasterComponent {
     }
   }
 
-  changeLayout(type: any): void {
-    this.layoutStyle = (type == 'table') ? "grid" : (type == 'grid') ? "table" : "grid";
-    if(this.layoutStyle == 'table') {
-      this.getData();
+  getCandidateData(id: number) {
+    this.service.getOpportunity(id).subscribe((res: any) => {
+      if(res.status) {
+        this.candidateData = res.recommendation;
+        this.toaster.success(res.message);
+      } else {
+        this.toaster.warning(res.message);
+      }
+    }),
+    (error: any) => {
+      this.toaster.error("Some technical error "+error);
     }
   }
 

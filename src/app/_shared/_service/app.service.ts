@@ -229,9 +229,10 @@ export class AppService {
     return this._http.post<any[]>(`${environment._url}/jp/post-job/`, data, httpOptions);
   }
 
-  getOpportunity(): Observable<any[]> {
+  getOpportunity(key: number): Observable<any[]> {
     const httpOptions = { headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${this._cookie.get('a_token')}` })};
-    return this._http.get<any[]>(`${environment._url}/jp/post-job/`, httpOptions);
+    let url = (key) ? `${environment._url}/jp/post-job/${key}/` : `${environment._url}/jp/post-job/`;
+    return this._http.get<any[]>(url, httpOptions);
   }
 
   getQualification(key: any): Observable<any[]> {

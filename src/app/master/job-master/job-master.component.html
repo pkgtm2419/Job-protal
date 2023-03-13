@@ -23,20 +23,14 @@
                             <button mat-raised-button style="margin-bottom: 24px;padding: 28px;" matTooltip="Clear filter." matTooltipPosition="above">Clear</button>
                         </div>
                     </div>
-                    <div class="col-md-2 d-flex justify-content-center align-items-center">
-                        <mat-button-toggle-group name="layoutStyle" aria-label="layout Style" class="mb-3">
-                            <mat-button-toggle value="grid" (click)="changeLayout('grid')" matTooltip="Table format view" matTooltipPosition="above"><mat-icon>format_list_bulleted</mat-icon></mat-button-toggle>
-                            <mat-button-toggle value="table" (click)="changeLayout('table')" matTooltip="Grid format view" matTooltipPosition="above"><mat-icon>border_all</mat-icon></mat-button-toggle>
-                        </mat-button-toggle-group>
-                    </div>
+                    <div class="col-md-2 d-flex justify-content-center align-items-center"></div>
                     <div class="col-md-5 align-self-end text-end mb-4 pe-4">
                         <button type="button" mat-raised-button class="me-2" [routerLink]="['/master/opportunity/create']" routerLinkActive="router-link-active" color="primary" matTooltip="Create new Opportunity." matTooltipPosition="above"> <mat-icon>add</mat-icon> New Opportunity.</button>
-                        <button type="button" *ngIf="layoutStyle == 'table'" mat-raised-button class="me-2" style="background-color: green;color: white;" (click)="download()" matTooltip="Download selected records in Excel." matTooltipPosition="above"><span class="material-symbols-outlined">cloud_download</span></button>
                     </div>
                 </div>
             </div>
         </div>
-        <ng-container *ngIf="layoutStyle == 'grid'">
+        <ng-container>
             <div class="container-fluid">
                 <div class="row shadow">
                     <div class="card">
@@ -65,55 +59,14 @@
                                 </div>
                             </div>
                             <div class="col-md-5">
-                                <h2>Pawan</h2>
+                                <div class="card p-3 my-2 shadow" *ngFor="let cand of candidateData">
+                                    {{cand.person_name}}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </ng-container>
-        <div class="row">
-            <ng-container *ngIf="layoutStyle == 'table'">
-                <div class="table-responsive">
-                    <table mat-table [dataSource]="dataSource" matSort id="export">
-                        <ng-container [matColumnDef]="keys" *ngFor="let keys of displayedColumns">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Click to sort" matTooltipPosition="above"> {{keys | uppercase}} </th>
-                            <td mat-cell *matCellDef="let element"> <div [innerHTML]="element[keys]"></div> </td>
-                        </ng-container>
-                        <!-- <ng-container matColumnDef="person_name">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Click to sort" matTooltipPosition="above"> Person_Name </th>
-                            <td mat-cell *matCellDef="let element"> {{element.person_name | titlecase}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="email_address">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Click to sort" matTooltipPosition="above"> Department_Name </th>
-                            <td mat-cell *matCellDef="let element"> {{element.email_address}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="phone_no">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Click to sort" matTooltipPosition="above"> Phone_Number </th>
-                            <td mat-cell *matCellDef="let element"> {{element.phone_no}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="created_at">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Click to sort" matTooltipPosition="above"> Last_Updated_Date </th>
-                            <td mat-cell *matCellDef="let element"> {{element.created_at | date: 'short'}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="resume_file">
-                            <th mat-header-cell *matHeaderCellDef> Resume_File </th>
-                            <td mat-cell *matCellDef="let element"><a href="{{element.resume_file}}" target="_blank" mat-button color="primary"><span class="material-symbols-outlined">visibility</span></a></td>
-                        </ng-container>
-                        <ng-container matColumnDef="Action">
-                            <th mat-header-cell *matHeaderCellDef> Action </th>
-                            <td mat-cell *matCellDef="let element" class="d-flex"> 
-                                <a mat-button><span class="material-symbols-outlined">edit</span></a>&nbsp;
-                                <a mat-button color="warn"><span class="material-symbols-outlined">delete_forever</span></a>
-                            </td>
-                        </ng-container> -->
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                        <tr class="text-center" *matNoDataRow> No data matching the filter "{{input.value}}"</tr>
-                    </table>
-                </div>
-                <mat-paginator [pageSizeOptions]="limits" showFirstLastButtons aria-label="Select page of periodic elements"> </mat-paginator>
-            </ng-container>
-        </div>
     </div>
 </section>
