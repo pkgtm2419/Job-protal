@@ -22,11 +22,21 @@ export class JobMasterComponent {
   paginator!: MatPaginator;
   layoutStyle: string = 'grid';
   jobPostList: any;
+  selectedJobData: any;
 
   constructor(private toaster: ToasterService, private service: AppService) { }
 
   ngOnInit(): void {
     this.getData();
+  }
+
+  selectJob(data: any) {
+    this.jobPostList = this.jobPostList.map((item: any) => {
+      item.selectedJob = false;
+      return item;
+    });
+    data.selectedJob = !data.selectedJob;
+    this.selectedJobData = [data];
   }
 
   getData() {
@@ -36,7 +46,7 @@ export class JobMasterComponent {
         this.dataSource = new MatTableDataSource(this.jobPostList);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-        this.displayedColumns = ["id", "resume_file", "person_name", "phone_no", "email_address", "created_at", "Action"];
+        this.displayedColumns = Object.keys(this.jobPostList[0]);
         this.limits.push(this.jobPostList.length);
         this.limits = [...new Set(this.limits)];
         this.limits = this.limits.sort((a: number, b: number) => {return a-b});

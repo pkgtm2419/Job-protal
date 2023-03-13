@@ -36,15 +36,51 @@
                 </div>
             </div>
         </div>
+        <ng-container *ngIf="layoutStyle == 'grid'">
+            <div class="container-fluid">
+                <div class="row shadow">
+                    <div class="card">
+                        <div class="row">
+                            <div class="col-md-3 p-1">
+                                <div class="card p-3 my-2" *ngFor="let job of jobPostList" [ngClass]="job.selectedJob ? 'bg-gray shadow' : ''">
+                                    <div (click)="selectJob(job)">
+                                        <p>Profile Name: <strong>{{job.job_title}}</strong></p>
+                                        <p>Experience: <strong>{{job.min_yoe}} - {{job.max_yoe}} Year</strong></p>
+                                        <p>Skills: <strong><span *ngFor="let skill of job.required_skills">{{skill.skill_name}}, </span>...</strong> </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card my-2 shadow p-3" *ngFor="let item of selectedJobData">
+                                    <h2><strong>{{item.id}}: </strong>{{item.job_title}}</h2>
+                                    <p> <strong>Job Type: </strong> <span> {{item.employment_type == 'ft-p' ? 'Full Time Permanent' : 'full time temporary'}}</span></p>
+                                    <p><strong>Job Location: </strong> <span *ngFor="let loc of item.available_location">{{loc.city_name}}, </span> </p>
+                                    <p><strong>Job From: </strong> <span>{{item.work_mode == 'in_office' ? 'Work from office' : 'Work from home'}}</span></p>
+                                    <p *ngIf="item.show_salary"> <strong> Salary Detail: </strong> {{item.salary_unit == 'INR' ? '&#8377;' : item.salary_unit == 'USD' ? '&#x24;' : ''}}{{item.min_salary}} to {{item.salary_unit == 'INR' ? '&#8377;' : item.salary_unit == 'USD' ? '&#x24;' : ''}}{{item.max_salary}}LPA </p>
+                                    <p><strong>Required Experience: </strong> {{item.min_yoe}} to {{item.max_yoe}} Year</p>
+                                    <p> <strong>Job Description: </strong> <span [innerHTML]="item.job_description"></span></p>
+                                    <strong>Required Skills: </strong> <ul><li *ngFor="let skill of item.required_skills">{{skill.skill_name}}</li></ul>
+                                    <strong>Required Qualification: </strong> <ul><li *ngFor="let qualify of item.qualification">{{qualify.qualification_name}}</li></ul>
+                                    <p><strong>Department: </strong> {{item.department}}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <h2>Pawan</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
         <div class="row">
             <ng-container *ngIf="layoutStyle == 'table'">
                 <div class="table-responsive">
                     <table mat-table [dataSource]="dataSource" matSort id="export">
-                        <ng-container matColumnDef="id">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Click to sort" matTooltipPosition="above"> ID. </th>
-                            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                        <ng-container [matColumnDef]="keys" *ngFor="let keys of displayedColumns">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Click to sort" matTooltipPosition="above"> {{keys | uppercase}} </th>
+                            <td mat-cell *matCellDef="let element"> <div [innerHTML]="element[keys]"></div> </td>
                         </ng-container>
-                        <ng-container matColumnDef="person_name">
+                        <!-- <ng-container matColumnDef="person_name">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Click to sort" matTooltipPosition="above"> Person_Name </th>
                             <td mat-cell *matCellDef="let element"> {{element.person_name | titlecase}} </td>
                         </ng-container>
@@ -70,7 +106,7 @@
                                 <a mat-button><span class="material-symbols-outlined">edit</span></a>&nbsp;
                                 <a mat-button color="warn"><span class="material-symbols-outlined">delete_forever</span></a>
                             </td>
-                        </ng-container>
+                        </ng-container> -->
                         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                         <tr class="text-center" *matNoDataRow> No data matching the filter "{{input.value}}"</tr>
