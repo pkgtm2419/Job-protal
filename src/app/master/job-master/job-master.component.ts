@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { ToasterService, AppService } from 'src/app/_shared/_service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-job-master',
@@ -9,23 +12,48 @@ import { ToasterService, AppService } from 'src/app/_shared/_service';
 })
 export class JobMasterComponent {
   match: any;
-  dataSource: any;
+  limits: any = [25, 50, 100, 250, 500];
+  limit: any = 25;
+  displayedColumns: string[] = [];
+  dataSource!: MatTableDataSource<any[]>;
+  @ViewChild(MatSort)
+  sort!: MatSort;
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
   layoutStyle: string = 'grid';
+  jobPostList: any;
 
   constructor(private toaster: ToasterService, private service: AppService) { }
 
   ngOnInit(): void {
-
+    this.getData();
   }
 
-  getData(data: any) {
-    console.log(data);
+  getData() {
+    this.service.getOpportunity().subscribe((res: any) => {
+      if(res.status) {
+        this.jobPostList = res.data;
+        this.dataSource = new MatTableDataSource(this.jobPostList);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+        this.displayedColumns = ["id", "resume_file", "person_name", "phone_no", "email_address", "created_at", "Action"];
+        this.limits.push(this.jobPostList.length);
+        this.limits = [...new Set(this.limits)];
+        this.limits = this.limits.sort((a: number, b: number) => {return a-b});
+        this.toaster.success(res.message);
+      } else {
+        this.toaster.warning(res.message);
+      }
+    }),
+    (error: any) => {
+      this.toaster.error("Some technical error "+error);
+    }
   }
 
   changeLayout(type: any): void {
     this.layoutStyle = (type == 'table') ? "grid" : (type == 'grid') ? "table" : "grid";
     if(this.layoutStyle == 'table') {
-      this.getData(this.match);
+      this.getData();
     }
   }
 

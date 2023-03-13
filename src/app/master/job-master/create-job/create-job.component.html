@@ -5,7 +5,7 @@
         <ul class="model-menu">
           <li onclick="goBack()"><button class="btn text-white bg-dark" matTooltip="Previous Page" matTooltipPosition="below"><span class="material-symbols-outlined">arrow_back</span></button></li>
           <li (click)="refresh()"><button class="btn text-white btn-primary" matTooltip="Refresh Page Data" matTooltipPosition="below"><span class="material-symbols-outlined">refresh</span></button></li> |
-          <li><a>Opportunity Master</a></li>/
+          <li><a [routerLink]="['/master/opportunity']" routerLinkActive="router-link-active">Opportunity Master</a></li>/
           <li><a>Create</a></li>
         </ul>
       </div>

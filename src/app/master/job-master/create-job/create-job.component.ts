@@ -7,6 +7,7 @@ import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-job',
@@ -42,7 +43,7 @@ export class CreateJobComponent {
   filteredIndustryList: any;
   departmentList: any = [];
 
-  constructor(private service: AppService, private toaster: ToasterService) {}
+  constructor(private service: AppService, private toaster: ToasterService, private router: Router) {}
 
   ngOnInit(): void {
     this.getQualificationList();
@@ -254,7 +255,9 @@ export class CreateJobComponent {
     console.log(match);
     this.service.createOpportunity(match).subscribe((res: any) => {
       if(res.status) {
+        this.opportunityForm.reset();
         this.toaster.success(res.message);
+        this.router.navigate(['/master/opportunity']);
       } else {
         this.toaster.warning(res.message);
       }

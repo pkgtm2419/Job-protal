@@ -229,6 +229,11 @@ export class AppService {
     return this._http.post<any[]>(`${environment._url}/jp/post-job/`, data, httpOptions);
   }
 
+  getOpportunity(): Observable<any[]> {
+    const httpOptions = { headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${this._cookie.get('a_token')}` })};
+    return this._http.get<any[]>(`${environment._url}/jp/post-job/`, httpOptions);
+  }
+
   getQualification(key: any): Observable<any[]> {
     const httpOptions = { headers: new HttpHeaders({'Authorization': `Bearer ${this._cookie.get('a_token')}` })};
     let url = (key) ? `${environment._url}/jp/qualification-search?search=${key}` : `${environment._url}/jp/qualification-search`;
